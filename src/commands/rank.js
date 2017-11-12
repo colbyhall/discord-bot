@@ -10,7 +10,7 @@ let Profiles = require('../models/profile');
 
 module.exports = {
     name: 'rank',
-    category: 'General',
+    category: 'general',
     help: '`;rank` gets current your current rank\n`;rank user` to get that users rank',
     /**
      * @param {Message} message 
