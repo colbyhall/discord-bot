@@ -1,0 +1,23 @@
+{
+    "prefix": ";",
+    "channels": {
+        "audit": "378613026779037696",
+        "welcome": "378611287690838038",
+        "rules": "378615642141753358",
+        "testing": "378615859037470720"
+    },
+    "rank": {
+        "member_rank": 15,
+        "max_rank_for_levels": 25,
+        "rank_exponential": 64
+    },
+    "warning_notification": 3,
+    "blacklist": [
+        "nigger",
+        "kike",
+        "faggot",
+        "kys",
+        "kill yourself",
+        "jamie"
+    ]
+}

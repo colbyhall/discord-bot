@@ -1,0 +1,25 @@
+{
+  "name": "Creative Logic",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Colbeyyy/Creative-Logic.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Colbeyyy/Creative-Logic/issues"
+  },
+  "homepage": "https://github.com/Colbeyyy/Creative-Logic#readme",
+  "dependencies": {
+    "discord.js": "github:hydrabolt/discord.js",
+    "ffmpeg-binaries": "^3.2.2-3",
+    "moment": "^2.19.1",
+    "mongoose": "^4.12.3",
+    "opusscript": "0.0.4",
+    "spotify-web-api-node": "^2.5.0",
+    "superagent": "^3.7.0",
+    "ytdl-core": "*"
+  }
+}
