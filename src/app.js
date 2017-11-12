@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 client.mode = 'development';
+client.musicPlayers = new Discord.Collection();
 
 const config = require('../config.json');
 const tokens = require('../tokens.json');
@@ -9,18 +10,33 @@ const utils = require('./utils');
 const Arguments = require('./types/arguments');
 const MusicPlayer = require('./types/musicplayer');
 
-const Collection = Discord.Collection;
+const mongoose = require('mongoose');
+let Guilds = require('./models/guild');
 
-/**
- * @type {Collection<String, MusicPlayer>}
- */
-client.musicPlayers = new Collection();
+mongoose.connect('mongodb://localhost/creative-logic', {useMongoClient: true });
+let db = mongoose.connection;
+
+db.on('error', (err) => {
+    console.log(err);
+})
+
 
 client.on('ready', async () => {
 
     for (let guild of client.guilds.array()) {
         client.musicPlayers.set(guild.id, new MusicPlayer(guild));
     }
+
+    const guilds = new Discord.Collection();
+
+    Guilds.find((err, res) => {
+
+        for (const guild of client.guilds.array()) {
+            if (res.find((guildData) => { return guildData.id == guild.id; }) == null) {
+                Guilds.create({id: guild.id, prefix: ';'});
+            }
+        }
+    })
 
     for(let channel of client.channels.array()) {
         if (channel && channel.type === 'text') {
@@ -43,33 +59,37 @@ client.on('message', async (message) => {
         return;
     }
     
-    if (message.content.startsWith(config.prefix)) {
-        const args = message.content.slice(config.prefix.length).split(' ');
-        const name = args.shift().toLowerCase();
-        
-        let command = utils.getCommands().get(name);
-        if (command) {
+    Guilds.findOne({id: message.guild.id}, (err, guild) => {
 
-            const argsObj = new Arguments();
-
-            for (const arg of args) {
-                argsObj.push(arg);
-            }
-
-            argsObj.musicPlayer = client.musicPlayers.get(message.guild.id);
-
-            command.execute(message, argsObj).then((result) => {
-                if (result) {
-                    utils.auditMessage(message.author, `Used \`${config.prefix + command.name} ${argsObj.toString()}\` in ${message.channel.toString()}`);
+        if (message.content.startsWith(guild ? guild.prefix: config.prefix)) {
+            const args = message.content.slice(config.prefix.length).split(' ');
+            const name = args.shift().toLowerCase();
+            
+            let command = utils.getCommands().get(name);
+            if (command) {
+    
+                const argsObj = new Arguments();
+    
+                for (const arg of args) {
+                    argsObj.push(arg);
                 }
-            });
+    
+                argsObj.musicPlayer = client.musicPlayers.get(message.guild.id);
+    
+                command.execute(message, argsObj).then((result) => {
+                    if (result) {
+                        utils.auditMessage(message.member, `Used \`${config.prefix + command.name} ${argsObj.toString()}\` in ${message.channel.toString()}`);
+                    }
+                });
+            }
+            return;
         }
-        return;
-    }
+
+    });
 
     for(let word of config.blacklist) {
         if (message.content.contains(word)) {
-            utils.auditMessage(message.author, 
+            utils.auditMessage(message.member, 
             `Mentioned a blacklisted word! \nThey said, "${message.content}" in ${message.channel.toString()}`, true);
 
             return;
@@ -86,7 +106,7 @@ client.on('messageDelete', async (message) => {
     if (message.content === '') {
         return;
     }
-    utils.auditMessage(message.author, `Removed "${message.content}" from ${message.channel.toString()}`);
+    utils.auditMessage(message.member, `Removed "${message.content}" from ${message.channel.toString()}`);
 });
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
@@ -97,7 +117,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
     if (oldMessage.author.bot || (oldMessage.content === '' && newMessage.content === '') || oldMessage.content === newMessage.content) {
         return;
     }
-    utils.auditMessage(newMessage.author, `Changed "${oldMessage.content}" to "${newMessage.content}" in ${newMessage.channel.toString()}`);
+    utils.auditMessage(message.member, `Changed "${oldMessage.content}" to "${newMessage.content}" in ${newMessage.channel.toString()}`);
 });
 
 client.on('guildMemberAdd', async (member) => {
@@ -105,12 +125,28 @@ client.on('guildMemberAdd', async (member) => {
         return;
     }
 
-    let WelcomeChannel = member.guild.channels.get(config.channels.welcome);
-    let ruleChannel = member.guild.channels.get(config.channels.rules);
+    Guilds.findOne({id: member.guild.id}, (err, guild) => {
 
-    if (WelcomeChannel && ruleChannel) {
-        WelcomeChannel.send(`Welcome ${member.toString()} to Creative Logic! Please read the ${ruleChannel.toString()} before moving to the community channels.`);
-    }
+        if (!guild || !guild.channels || !guild.channels.welcome) return;
+
+        let welcomeChannel = member.guild.channels.get(guild.channels.welcome);
+
+        if (guild.channels.rules) {
+            let ruleChannel = member.guild.channels.get(guild.channels.rules);
+            
+            if (welcomeChannel && ruleChannel) {
+                welcomeChannel.send(`Welcome ${member.toString()} to ${member.guild.name}! Please read the ${ruleChannel.toString()} before moving to the community channels.`);
+                
+                return;
+            }
+        }
+
+        if (welcomeChannel) {
+            welcomeChannel.send(`Welcome ${member.toString()} to ${member.guild.name}!`);
+        }
+    
+    });
+
 });
 
 client.on('guildMemberRemove', async (member) => {
@@ -118,7 +154,7 @@ client.on('guildMemberRemove', async (member) => {
     {
         return;
     }
-    utils.auditMessage(member.author, `Left...\nFuck them anyway`);
+    utils.auditMessage(member, `Left...\nFuck them anyway`);
 });
 
 client.on('messageReactionAdd', async (messageReaction, user) => {
@@ -161,6 +197,16 @@ client.on('voiceStateUpdate', async (oldMember, newMember) => {
     if (memberCount == 1) {
         client.musicPlayers.get(oldMember.guild.id).clear();
     }
+});
+
+client.on('guildCreate', async (guild) => {
+
+    Guilds.findOne({id: guild.id}, (err, guildData) => {
+        if (!guildData) {
+            Guilds.create({id: guild.id});
+        }
+    })
+
 });
 
 process.argv.forEach((val, index, array) => {

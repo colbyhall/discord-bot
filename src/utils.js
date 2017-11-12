@@ -15,6 +15,8 @@ const Command = require('./types/command');
 const Arguments = require('./types/arguments');
 const User = Discord.User;
 
+const Guilds = require('./models/guild');
+
 /**
  * @param {String} search_for
  * @returns {Boolean}
@@ -39,21 +41,27 @@ String.prototype.firstLetterToUpperCase = function() {
 module.exports = {
     /**
     * Audits an embeded message to our audit channel
-    * @param {User} user
+    * @param {GuildMember} member
     * @param {String} reason title of embed
     * @param {String} message message of embed
     * @param {Boolean} warning message of embed
     */
-    auditMessage(user, message, warning = false) {
-        let auditChannel = client.channels.get(config.channels.audit);
+    auditMessage(member, message, warning = false) {
 
-        if (auditChannel) {
-            let embed = this.getEmbed();
-            embed.setColor(warning ? 0xf44242 : 0xf4eb41);
-            embed.setDescription(message);
-            embed.setAuthor(`${user.username}#${user.discriminator}`, user.avatarURL());
-            auditChannel.send({embed});
-        }
+        if (!member.guild) return;
+
+        Guilds.findOne({id: member.guild.id}, (err, guild) => {
+            if (!guild || !guild.channels || !guild.channels.audit) return;
+            let auditChannel = client.channels.get(guild.channels.audit);
+    
+            if (auditChannel) {
+                let embed = this.getEmbed();
+                embed.setColor(warning ? 0xf44242 : 0xf4eb41);
+                embed.setDescription(message);
+                embed.setAuthor(`${member.user.username}#${member.user.discriminator}`, member.user.avatarURL());
+                auditChannel.send({embed});
+            }
+        })
     },
     /**
      * Searches youtube and returns top 5 results
