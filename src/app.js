@@ -112,14 +112,14 @@ client.on('message', async (message) => {
                 return rank.guildId == message.guild.id;
             });
 
-            let prevRank = Math.trunc(rank.rank / config.rank.exponential);
-            
+            let prevRank = utils.getRankFromTotalPoints(rank.rank);
+
             rank.rank += points;
 
-            if (Math.trunc(rank.rank / config.rank.exponential) > prevRank) {
+            if (utils.getRankFromTotalPoints(rank.rank) > prevRank) {
                 let embed = utils.getEmbed()
                 embed.setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.avatarURL());
-                embed.setDescription(`Congrats you've ranked up to ${Math.trunc(rank.rank / config.rank.exponential)}!`);
+                embed.setDescription(`Congrats you've ranked up to ${utils.getRankFromTotalPoints(rank.rank)}!`);
 
                 message.channel.send({embed});
             }

@@ -177,6 +177,34 @@ module.exports = {
         }
 
         return commands;
+    },
+    /**
+     * 
+     * @param {Number} totalPoints 
+     * @returns {Number}
+     */
+    getRankFromTotalPoints(totalPoints) {
+        let points = 0;
+        let rank = 0;
+        while(points < totalPoints) {
+            rank++;
+            points += config.rank.exponential * rank;
+        }
+
+        return rank;
+    },
+    /**
+     * 
+     * @param {Number} rank 
+     * @returns {Number}
+     */
+    getTotalPointsFromRank(rank) {
+        let points = 0;
+        for (let i = 0; i < rank; i++) {
+            points += config.rank.exponential * i;
+        }
+
+        return points;
     }
 };
 

@@ -15,6 +15,7 @@
   "dependencies": {
     "discord.js": "github:hydrabolt/discord.js",
     "ffmpeg-binaries": "^3.2.2-3",
+    "jimp": "^0.2.28",
     "moment": "^2.19.1",
     "mongoose": "^4.12.3",
     "opusscript": "0.0.4",

@@ -39,7 +39,7 @@ module.exports = {
                     return rank.guildId == message.guild.id;
                 });
                 embed.setAuthor(`${author.username}#${author.discriminator}`, author.avatarURL());
-                embed.setDescription(`Rank: ${Math.trunc(rank.rank / config.rank.exponential)} (${rank.rank}/${(Math.trunc(rank.rank / config.rank.exponential) + 1) * config.rank.exponential})`);
+                embed.setDescription(`Rank: ${utils.getRankFromTotalPoints(rank.rank)} (${rank.rank}/${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank.rank) + 1)})`);
                 message.channel.send({embed});
             }
         })
