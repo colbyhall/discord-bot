@@ -9,18 +9,20 @@ const utils = require('./utils');
 const Arguments = require('./types/arguments');
 const MusicPlayer = require('./types/musicplayer');
 
+const Collection = Discord.Collection;
+
 /**
- * @type {MusicPlayer}
+ * @type {Collection<String, MusicPlayer>}
  */
-var musicPlayer = null;
+client.musicPlayers = new Collection();
 
 client.on('ready', async () => {
 
-    let guild = client.guilds.first();
+    for (let guild of client.guilds.array()) {
+        client.musicPlayers.set(guild.id, new MusicPlayer(guild));
+    }
 
-    musicPlayer = new MusicPlayer(guild);
-
-    for(let channel of guild.channels.array()) {
+    for(let channel of client.channels.array()) {
         if (channel && channel.type === 'text') {
             channel.messages.fetch();
         }
@@ -30,7 +32,7 @@ client.on('ready', async () => {
         return;
     }
 
-    let testChannel = guild.channels.get(config.channels.testing);
+    let testChannel = client.channels.get(config.channels.testing);
     if (testChannel) {
         testChannel.send('I\'m alive again');
     }
@@ -54,7 +56,7 @@ client.on('message', async (message) => {
                 argsObj.push(arg);
             }
 
-            argsObj.musicPlayer = musicPlayer;
+            argsObj.musicPlayer = client.musicPlayers.get(message.guild.id);
 
             command.execute(message, argsObj).then((result) => {
                 if (result) {
@@ -120,6 +122,9 @@ client.on('guildMemberRemove', async (member) => {
 });
 
 client.on('messageReactionAdd', async (messageReaction, user) => {
+
+    let musicPlayer = client.musicPlayers.get(messageReaction.message.guild.id);
+
     if (!musicPlayer.voiceConnection || messageReaction.emoji.name != 'upvote') {
         return;
     }
@@ -147,14 +152,14 @@ client.on('messageReactionAdd', async (messageReaction, user) => {
 });
 
 client.on('voiceStateUpdate', async (oldMember, newMember) => {
-    if (!musicPlayer.voiceConnection) {
+    if (!client.musicPlayers.get(oldMember.guild.id).voiceConnection) {
         return;
     }
 
-    let memberCount = client.channels.get(musicPlayer.voiceConnection.channel.id).members.array().length;
+    let memberCount = client.channels.get(client.musicPlayers.get(oldMember.guild.id).voiceConnection.channel.id).members.array().length;
 
     if (memberCount == 1) {
-        musicPlayer.clear();
+        client.musicPlayers.get(oldMember.guild.id).clear();
     }
 });
 

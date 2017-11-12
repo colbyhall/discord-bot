@@ -45,7 +45,7 @@ module.exports = {
     * @param {Boolean} warning message of embed
     */
     auditMessage(user, message, warning = false) {
-        let auditChannel = client.guilds.first().channels.get(config.channels.audit);
+        let auditChannel = client.channels.get(config.channels.audit);
 
         if (auditChannel) {
             let embed = this.getEmbed();
@@ -103,19 +103,26 @@ module.exports = {
     },
     /**
      * Returns true if member has role listed in command
-     * @param {GuildMember} member
+     * @param {User} user
      * @param {Command} command
      * @returns {Boolean}
      */
-    canUse(member, command) {
+    canUse(user, command) {
 
         if (!command.roles) {
             return true;
         }
-        const guildMember = client.guilds.first().members.get(member.id);
-        for (const id of command.roles) {
-            if (guildMember.roles.has(id)) {
-                return true;
+
+        for(let guild of client.guilds.array()) {
+            for(const guild_id of command.roles) {
+                if (guild.roles.has(guild_id)) {
+                    const guildMember = guild.members.get(user.id);
+                    for (const id of command.roles) {
+                        if (guildMember.roles.has(id)) {
+                            return true;
+                        }
+                    }
+                }
             }
         }
 

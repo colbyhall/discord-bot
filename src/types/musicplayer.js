@@ -12,6 +12,10 @@ const Message = Discord.Message;
 const TextChannel = Discord.TextChannel;
 
 class MusicPlayer {
+    /**
+     * 
+     * @param {Guild} guild 
+     */
     constructor(guild) {
         /**
          * @type {MusicData[]}
