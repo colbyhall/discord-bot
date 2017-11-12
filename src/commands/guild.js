@@ -31,7 +31,6 @@ module.exports = {
 
             if (!guild) return;
 
-            console.log(guild);
             embed.setAuthor(message.guild.name, message.guild.iconURL());
             
             if (args.length == 0) {
