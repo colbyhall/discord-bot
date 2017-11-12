@@ -26,7 +26,7 @@ module.exports = {
         if (args[0]) {
             author = message.guild.members.find((member) => {
                 return member.toString() === args[0];
-            })
+            }).user;
         }
 
         if (!author) {
