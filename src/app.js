@@ -12,8 +12,10 @@ const MusicPlayer = require('./types/musicplayer');
 
 const mongoose = require('mongoose');
 let Guilds = require('./models/guild');
+let Profiles = require('./models/profile');
 
 mongoose.connect('mongodb://localhost/creative-logic', {useMongoClient: true });
+mongoose.Promise = global.Promise;
 let db = mongoose.connection;
 
 db.on('error', (err) => {
@@ -95,6 +97,40 @@ client.on('message', async (message) => {
             return;
         }
     }
+
+    const points = message.content.split(' ').length;
+
+    Profiles.findOne({id: message.author.id}, (err, profile) => {
+
+        if (profile) {
+            if (!profile.ranks) {
+                profile.ranks = [{guildId: message.guild.id, rank: points}]
+                profile.save()
+                return;
+            }
+            let rank = profile.ranks.find((rank) => {
+                return rank.guildId == message.guild.id;
+            });
+
+            let prevRank = Math.trunc(rank.rank / config.rank.exponential);
+            
+            rank.rank += points;
+
+            if (Math.trunc(rank.rank / config.rank.exponential) > prevRank) {
+                let embed = utils.getEmbed()
+                embed.setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.avatarURL());
+                embed.setDescription(`Congrats you've ranked up to ${Math.trunc(rank.rank / config.rank.exponential)}!`);
+
+                message.channel.send({embed});
+            }
+
+            profile.save();
+            return;
+        }
+
+        Profiles.create({id: message.author.id, guilds: [message.guild.id], ranks: [{guildId: message.guild.id, rank: points}]});
+
+    });
 
 });
 

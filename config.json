@@ -9,7 +9,7 @@
     "rank": {
         "member_rank": 15,
         "max_rank_for_levels": 25,
-        "rank_exponential": 64
+        "exponential": 64
     },
     "warning_notification": 3,
     "blacklist": [

@@ -11,6 +11,6 @@ let guildSchema = mongoose.Schema({
         rules: String
     },
     prefix: String
-})
+}, { collection: 'guilds' });
 
 let guild = module.exports = mongoose.model('Guild', guildSchema);
