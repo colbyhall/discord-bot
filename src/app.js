@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-client.mode = 'development';
+client.mode = 'normal';
 client.musicPlayers = new Discord.Collection();
 
 const config = require('../config.json');
@@ -21,7 +21,6 @@ let db = mongoose.connection;
 db.on('error', (err) => {
     console.log(err);
 })
-
 
 client.on('ready', async () => {
 
@@ -250,7 +249,7 @@ process.argv.forEach((val, index, array) => {
         let command = val.substr(1);
 
         switch (command) {
-            case 'normal': {
+            case 'development': {
                 client.mode = command;
             }
         }

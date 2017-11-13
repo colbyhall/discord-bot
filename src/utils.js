@@ -2,7 +2,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const request = require('superagent');
 const client = new Discord.Client();
-client.mode = 'development';
+client.mode = 'normal';
 
 const config = require('../config.json');
 const tokens = require('../tokens.json');
@@ -213,7 +213,7 @@ process.argv.forEach((val, index, array) => {
         let command = val.substr(1);
 
         switch (command) {
-            case 'normal': {
+            case 'development': {
                 client.mode = command;
             }
         }

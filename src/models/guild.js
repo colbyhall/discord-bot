@@ -10,7 +10,8 @@ let guildSchema = mongoose.Schema({
         welcome: String,
         rules: String
     },
-    prefix: String
+    prefix: String,
+    commands: [{name: String, roles: [String]}]
 }, { collection: 'guilds' });
 
 let guild = module.exports = mongoose.model('Guild', guildSchema);

@@ -10,7 +10,7 @@ const jimp = require('jimp');
 module.exports = {
     name: 'debug',
     category: 'debugging',
-    help: '',
+    help: 'debug command colby changes all the time',
     role: [
         "369607830413639680",
         "369662679473848320",
