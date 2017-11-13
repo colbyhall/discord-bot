@@ -2,7 +2,6 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const request = require('superagent');
 const client = new Discord.Client();
-client.mode = 'normal';
 
 const config = require('../config.json');
 const tokens = require('../tokens.json');
@@ -208,16 +207,4 @@ module.exports = {
     }
 };
 
-process.argv.forEach((val, index, array) => {
-    if (val.startsWith('-')) {
-        let command = val.substr(1);
-
-        switch (command) {
-            case 'development': {
-                client.mode = command;
-            }
-        }
-    }
-});
-
-client.login(client.mode === 'development' ? tokens.dev : tokens.normal);
+client.login(tokens.token);
