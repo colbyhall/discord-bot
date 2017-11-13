@@ -54,7 +54,11 @@ module.exports = {
                 }
             }
 
-            message.channel.send({embed});
+            message.author.createDM().then((channel) => {
+                channel.send({embed});
+            });
+
+            message.reply('we sent you a DM with all of our amazing commands');
         }
 
         return false;
