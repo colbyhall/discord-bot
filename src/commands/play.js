@@ -26,7 +26,7 @@ module.exports = {
         /**
          * @type {GuildMember}
          */
-        const guildMember = message.channel.guild.members.get(message.author.id);
+        const guildMember = message.member;
 
         if (guildMember.voiceChannel && guildMember.voiceChannel.joinable) {
             guildMember.voiceChannel.join().then((connection) => {
@@ -55,7 +55,7 @@ module.exports = {
                     }
                 }
 
-                utils.youtubeSearch(args.toString(), message.channel.guild.members.get(message.author.id), (musicData) => {
+                utils.youtubeSearch(args.toString(), message.member, (musicData) => {
                     if (musicData.error === '') {
                         if (args.musicPlayer.queue.length != 0) {
                             let embed = utils.getEmbed();
