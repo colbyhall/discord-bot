@@ -21,7 +21,7 @@ module.exports = {
         let embed = utils.getEmbed();
 
         embed.setThumbnail(message.client.user.avatarURL());
-        embed.addField('Ping', `${message.client.ping} ms`);
+        embed.addField('Ping', `${Math.trunc(message.client.ping)} ms`);
 
         let ms = message.client.uptime;
         let time = `${ms}ms`;
