@@ -1,7 +1,9 @@
+const ClientModes = require('./types/clientmodes');
 const fs = require('fs');
 const Discord = require('discord.js');
 const request = require('superagent');
 const client = new Discord.Client();
+client.mode = ClientModes.SHIPPING;
 
 const config = require('../config.json');
 const tokens = require('../tokens.json');
@@ -157,8 +159,8 @@ module.exports = {
      * @returns {Boolean}
      */
     shouldCheckMessage(message) {
-        return (client.mode === 'development' && message.channel.id != config.channels.testing) 
-            || (client.mode === 'normal') && message.channel.id == config.channels.testing 
+        return (client.mode === ClientModes.DEBUG && message.channel.id != config.channels.testing) 
+            || (client.mode === ClientModes.SHIPPING) && message.channel.id == config.channels.testing 
             || message.author.bot
     },
     /**
@@ -206,5 +208,17 @@ module.exports = {
         return points;
     }
 };
+
+process.argv.forEach((val, index, array) => {
+    if (val.startsWith('-')) {
+        let command = val.substr(1);
+
+        switch (command) {
+            case 'debug': {
+                client.mode = ClientModes.DEBUG;
+            }
+        }
+    }
+});
 
 client.login(tokens.token);

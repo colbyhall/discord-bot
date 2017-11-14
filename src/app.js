@@ -1,6 +1,8 @@
+const ClientModes = require('./types/clientmodes');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 client.musicPlayers = new Discord.Collection();
+client.mode = ClientModes.SHIPPING;
 
 const config = require('../config.json');
 const tokens = require('../tokens.json');
@@ -44,7 +46,7 @@ client.on('ready', async () => {
         }
     }
    
-    if (client.mode === 'normal') {
+    if (client.mode === ClientModes.SHIPPING) {
         return;
     }
 
@@ -133,7 +135,7 @@ client.on('message', async (message) => {
 });
 
 client.on('messageDelete', async (message) => {
-    if (client.mode === 'development') {
+    if (client.mode === ClientModes.DEBUG) {
         return;
     }
 
@@ -144,7 +146,7 @@ client.on('messageDelete', async (message) => {
 });
 
 client.on('messageUpdate', async (oldMessage, newMessage) => {
-    if (client.mode === 'development') {
+    if (client.mode === ClientModes.DEBUG) {
         return;
     }
 
@@ -155,7 +157,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
 });
 
 client.on('guildMemberAdd', async (member) => {
-    if (client.mode === 'development') {
+    if (client.mode === ClientModes.DEBUG) {
         return;
     }
 
@@ -184,7 +186,7 @@ client.on('guildMemberAdd', async (member) => {
 });
 
 client.on('guildMemberRemove', async (member) => {
-    if (client.mode === 'development')
+    if (client.mode === ClientModes.DEBUG)
     {
         return;
     }
@@ -241,6 +243,18 @@ client.on('guildCreate', async (guild) => {
         }
     })
 
+});
+
+process.argv.forEach((val, index, array) => {
+    if (val.startsWith('-')) {
+        let command = val.substr(1);
+
+        switch (command) {
+            case 'debug': {
+                client.mode = ClientModes.DEBUG;
+            }
+        }
+    }
 });
 
 client.login(tokens.token);

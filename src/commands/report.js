@@ -17,7 +17,7 @@ module.exports = {
     async execute(message, args) {
 
         if (args.length > 2) {
-            utils.auditMessage(message.author, `Reported "${args[0]}"\n${args.toString(1)}`, true);
+            utils.auditMessage(message.member, `Reported "${args[0]}"\n${args.toString(1)}`, true);
         }
         else {
             utils.getCommands().get('help').execute(message, new Array(this.name));
