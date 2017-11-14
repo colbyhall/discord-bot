@@ -45,8 +45,8 @@ module.exports = {
                             
                             message.channel.send({embed});
                         }
-                        args.musicPlayer.searchResults = null;
                         args.musicPlayer.add(args.musicPlayer.searchResults[index]);
+                        args.musicPlayer.searchResults = null;
 
                         return false;
                     }
