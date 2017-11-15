@@ -18,6 +18,8 @@ module.exports = {
      */
     async execute(message, args) {
 
+        if (!utils.canUse(message.author, this)) return;
+
         if (!args[0]) {
             utils.getCommands().get('help').execute(message, [this.name]);
             return false;

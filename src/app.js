@@ -62,7 +62,11 @@ client.on('message', async (message) => {
         return;
     }
     
-    const points = message.content.split(' ').length;
+    let points = message.content.split(' ').length;
+
+    if (points > 5) {
+        points = 5;
+    }
 
     Profiles.findOne({id: message.author.id}, (err, profile) => {
 
