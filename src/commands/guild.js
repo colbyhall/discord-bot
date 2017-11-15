@@ -58,7 +58,7 @@ module.exports = {
                 if (args[0] == 'prefix' && args[1]) {
                     guild.prefix = args[1];
                     
-
+                    guild.save();
                     embed.setDescription(`Prefix has been set to ${args[1]}`);
 
                     message.channel.send({embed});
