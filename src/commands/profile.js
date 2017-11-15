@@ -38,28 +38,29 @@ module.exports = {
             }
             const embed = utils.getEmbed();
 
-            console.log(profile);
-
             embed.setAuthor(`${member.displayName}#${member.user.discriminator}`, member.user.avatarURL());
 
             const rank = profile.ranks.find((rank) => {
                 return rank.guildId == message.guild.id;
             }).rank;
 
-
             const warnings = profile.warnings.filter((warning) => {
                 return warning.guildId === message.guild.id;
             }).length;
 
-            const kicks = profile.kicks.filter((warning) => {
-                return warning.guildId === message.guild.id;
+            const mutes = profile.mutes.filter((mute) => {
+                return mute.guildId === message.guild.id;
             }).length;
 
-            const bans = profile.kicks.filter((warning) => {
-                return warning.guildId === message.guild.id;
+            const kicks = profile.kicks.filter((kick) => {
+                return kick.guildId === message.guild.id;
             }).length;
 
-            embed.setDescription(`**Rank:** ${utils.getRankFromTotalPoints(rank)} (${rank} / ${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank) + 1)})\n\nThis user has ${warnings} warnings, ${kicks} kicks, and ${bans} bans`);
+            const bans = profile.bans.filter((ban) => {
+                return ban.guildId === message.guild.id;
+            }).length;
+
+            embed.setDescription(`**Rank:** ${utils.getRankFromTotalPoints(rank)} (${rank} / ${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank) + 1)})\n\nThis user has ${warnings} warnings, ${mutes} mutes, ${kicks} kicks, and ${bans} bans`);
 
             message.channel.send({embed});
         });

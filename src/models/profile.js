@@ -9,7 +9,8 @@ let profileSchema = mongoose.Schema({
     warnings: [{reason: String, date: Date, guildId: String}],
     kicks: [{reason: String, date: Date, guildId: String}],
     bans: [{reason: String, date: Date, guildId: String}],
-    ranks: [{guildId: String, rank: Number, notify: Boolean}]
+    ranks: [{guildId: String, rank: Number, notify: Boolean}],
+    mutes: [{guildId: String, channelId: String}]
 }, { collection: 'profiles' });
 
 let profile = module.exports = mongoose.model('Profile', profileSchema);
