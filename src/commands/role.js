@@ -9,22 +9,6 @@ module.exports = {
     name: 'role',
     category: 'general',
     help: '`;role list` list roles that can be added\n`;role add role` can be used for adding a certain role\n`;role remove role` can be used for removing a certain role',         
-    roles: [
-        "369653692380610563",
-        "369653619261440011",
-        "369660420757389313",
-        "371699829434482689",
-        "369653719542923265",
-        "371763657840787458",
-        "371763685288312842",
-        "371763719333478421",
-        "371763616933740548",
-        "371764172892930050",
-        "371764293269585921",
-        "371764347271118869",
-        "371764412098281473",
-        "374585052148793354"
-    ],
     /**
      * @param {Message} message 
      * @param {Arguments} args 

@@ -15,11 +15,6 @@ module.exports = {
     name: 'warn',
     category: 'moderation',
     help: '`;warn user message` send the user a dm with the message\n`;warn user` to get users warnings on server\n`;warn user remove index` removes that warning of that index\n`;warn user clear` clears that users warnings',
-    role: [
-        "369607830413639680",
-        "369662679473848320",
-        "369615751906066433"
-    ],
     /**
      * @param {Message} message 
      * @param {Arguments} args 

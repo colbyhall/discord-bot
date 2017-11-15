@@ -61,43 +61,6 @@ client.on('message', async (message) => {
         return;
     }
     
-    Guilds.findOne({id: message.guild.id}, (err, guild) => {
-
-        if (message.content.startsWith(guild ? guild.prefix: config.prefix)) {
-            const args = message.content.slice(config.prefix.length).split(' ');
-            const name = args.shift().toLowerCase();
-            
-            let command = utils.getCommands().get(name);
-            if (command) {
-    
-                const argsObj = new Arguments();
-    
-                for (const arg of args) {
-                    argsObj.push(arg);
-                }
-    
-                argsObj.musicPlayer = client.musicPlayers.get(message.guild.id);
-    
-                command.execute(message, argsObj).then((result) => {
-                    if (result) {
-                        utils.auditMessage(message.member, `Used \`${config.prefix + command.name} ${argsObj.toString()}\` in ${message.channel.toString()}`);
-                    }
-                });
-            }
-            return;
-        }
-
-    });
-
-    for(let word of config.blacklist) {
-        if (message.content.contains(word)) {
-            utils.auditMessage(message.member, 
-            `Mentioned a blacklisted word! \nThey said, "${message.content}" in ${message.channel.toString()}`, true);
-
-            return;
-        }
-    }
-
     const points = message.content.split(' ').length;
 
     Profiles.findOne({id: message.author.id}, (err, profile) => {
@@ -131,6 +94,56 @@ client.on('message', async (message) => {
         Profiles.create({id: message.author.id, guilds: [message.guild.id], ranks: [{guildId: message.guild.id, rank: points}]});
 
     });
+
+    Guilds.findOne({id: message.guild.id}, (err, guild) => {
+
+        if (message.content.startsWith(guild ? guild.prefix: config.prefix)) {
+            const args = message.content.slice(config.prefix.length).split(' ');
+            const name = args.shift().toLowerCase();
+            
+            const commandData = guild.commands.find((command) => {
+                return command.name == name;
+            });
+
+            let command = utils.getCommands().get(name);
+            if (command) {
+    
+                if (commandData) {
+                    command.roles = commandData.roles;
+
+                    if (!commandData.enabled) {
+                        return;
+                    }
+                }
+
+                const argsObj = new Arguments();
+                
+                for (const arg of args) {
+                    argsObj.push(arg);
+                }
+    
+                argsObj.musicPlayer = client.musicPlayers.get(message.guild.id);
+    
+                command.execute(message, argsObj).then((result) => {
+                    if (result) {
+                        utils.auditMessage(message.member, `Used \`${config.prefix + command.name} ${argsObj.toString()}\` in ${message.channel.toString()}`);
+                    }
+                });
+            }
+            return;
+        }
+
+    });
+
+    for(let word of config.blacklist) {
+        if (message.content.contains(word)) {
+            utils.auditMessage(message.member, 
+            `Mentioned a blacklisted word! \nThey said, "${message.content}" in ${message.channel.toString()}`, true);
+
+            return;
+        }
+    }
+
 
 });
 

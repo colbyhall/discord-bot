@@ -9,11 +9,6 @@ module.exports = {
     name: 'purge',
     category: 'moderation',
     help: '`;purge 1-100` removes message from channel command is used in',
-    roles: [
-        "369607830413639680",
-        "369662679473848320",
-        "369615751906066433"
-    ],
     /**
      * @param {Message} message 
      * @param {Arguments} args 

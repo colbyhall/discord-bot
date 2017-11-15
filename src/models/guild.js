@@ -11,7 +11,8 @@ let guildSchema = mongoose.Schema({
         rules: String
     },
     prefix: String,
-    commands: [{name: String, roles: [String]}]
+    commands: [{name: String, roles: [String], enabled: Boolean}],
+    tempBans: [{id: String, time: Object}]
 }, { collection: 'guilds' });
 
-let guild = module.exports = mongoose.model('Guild', guildSchema);
+module.exports = mongoose.model('Guild', guildSchema);

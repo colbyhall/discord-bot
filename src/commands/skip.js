@@ -9,9 +9,6 @@ module.exports = {
     name: 'skip',
     category: 'music',
     help: '`;skip` skips current song',
-    role: [
-        "374264282189398019"
-    ],
     /**
      * @param {Message} message 
      * @param {Arguments} args 

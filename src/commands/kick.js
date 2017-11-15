@@ -9,11 +9,6 @@ module.exports = {
     name: 'kick',
     category: 'moderation',
     help: '`;kick user reason` to kick the user for that reason\n`;kick user` to kick that user',
-    roles: [
-        "369607830413639680",
-        "369662679473848320",
-        "369615751906066433"
-    ],
     /**
      * @param {Message} message 
      * @param {Arguments} args 

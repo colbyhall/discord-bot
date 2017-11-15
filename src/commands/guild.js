@@ -10,12 +10,7 @@ const Guilds = require('../models/guild');
 module.exports = {
     name: 'guild',
     category: 'moderation',
-    help: '`;guild` gets current data about the guild\n`;guild prefix string` sets the guilds prefix\n`;guild channel (audit, welcome, rules)` sets that channel to be one of those three channels\n`;guild role` to get number of members in role',
-    roles: [
-        "369607830413639680",
-        "369662679473848320",
-        "369615751906066433"
-    ],
+    help: '`;guild` gets current data about the guild',
     /**
      * @param {Message} message 
      * @param {Arguments} args 
@@ -55,60 +50,9 @@ module.exports = {
                 return;
             }
             else {
-                if (args[0] == 'prefix' && args[1]) {
-                    guild.prefix = args[1];
-                    
-                    guild.save();
-                    embed.setDescription(`Prefix has been set to ${args[1]}`);
-
-                    message.channel.send({embed});
-                }
-                else if (args[0] == 'channel' && args[1]) {
-
-                    if (args[1] == 'audit') {
-                        guild.channels.audit = message.channel.id;
-                        guild.save();
-                        embed.setDescription(`Audit channel has been set to ${message.channel.toString()}`);
-                        
-                        message.channel.send({embed});
-                    }
-                    else if (args[1] == 'welcome') {
-                        guild.channels.welcome = message.channel.id;
-                        guild.save();
-                        embed.setDescription(`Welcome channel has been set to ${message.channel.toString()}`);
-                        
-                        message.channel.send({embed});
-                    }
-                    else if(args[1] == 'rules') {
-                        guild.channels.rules = message.channel.id;
-                        guild.save();
-                        embed.setDescription(`Rules channel has been set to ${message.channel.toString()}`);
-                        
-                        message.channel.send({embed});
-                    }
-                    else {
-                        utils.getCommands().get('help').execute(message, new Array(this));
-                    }
-
-                }
-                else if(args[0]) {
-                    const role = message.guild.roles.find((role) => {
-                        return args[0].toLowerCase() == role.name.toLowerCase() || args[0].toString() === role.toString();
-                    });
-
-                    if (role) {
-                        embed.setAuthor(message.guild.name, message.guild.iconURL());
-                        embed.setDescription(`There are ${role.members.array().length} members in ${role.toString()}`);
-                        message.channel.send({embed});
-                        return;
-                    }
-                }
-                else {
-                    utils.getCommands().get('help').execute(message, new Array(this));
-                }
+                utils.getCommands().get('help').execute(message, new Array(this));
             }
-
-        })
+        });
 
 
         return false;

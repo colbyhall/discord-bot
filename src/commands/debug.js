@@ -11,11 +11,6 @@ module.exports = {
     name: 'debug',
     category: 'debugging',
     help: 'debug command colby changes all the time',
-    role: [
-        "369607830413639680",
-        "369662679473848320",
-        "369615751906066433"
-    ],
     /**
      * @param {Message} message 
      * @param {Arguments} args 
