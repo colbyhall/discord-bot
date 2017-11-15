@@ -38,7 +38,7 @@ module.exports = {
             SEND_MESSAGES: false
         });
 
-        Profiles.findOne({id: message.author.id}, (err, profile) => {
+        Profiles.findOne({id: member.id}, (err, profile) => {
             profile.mutes.push({guildId: message.guild.id, channelId: message.channel.id});
 
             profile.save();
