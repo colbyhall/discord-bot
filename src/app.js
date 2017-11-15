@@ -131,7 +131,7 @@ client.on('message', async (message) => {
     
                 command.execute(message, argsObj).then((result) => {
                     if (result) {
-                        utils.auditMessage(message.member, `Used \`${config.prefix + command.name} ${argsObj.toString()}\` in ${message.channel.toString()}`);
+                        utils.auditMessage(message.member, `Used "${config.prefix + command.name} ${argsObj.toString()}" in ${message.channel.toString()}`);
                     }
                 });
             }
