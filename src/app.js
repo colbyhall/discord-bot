@@ -38,6 +38,7 @@ client.on('ready', async () => {
                 Guilds.create({id: guild.id, prefix: ';'});
             }
         }
+        
     });
 
     for(let channel of client.channels.array()) {

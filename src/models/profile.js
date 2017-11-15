@@ -7,6 +7,8 @@ let profileSchema = mongoose.Schema({
     },
     guilds: [],
     warnings: [{reason: String, date: Date, guildId: String}],
+    kicks: [{reason: String, date: Date, guildId: String}],
+    bans: [{reason: String, date: Date, guildId: String}],
     ranks: [{guildId: String, rank: Number, notify: Boolean}]
 }, { collection: 'profiles' });
 

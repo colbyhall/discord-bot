@@ -5,6 +5,8 @@ const Message = Discord.Message;
 
 const utils = require('../utils');
 
+const Profiles = require('../models/profile');
+
 module.exports = {
     name: 'kick',
     category: 'moderation',
@@ -42,6 +44,14 @@ module.exports = {
             member.kick();
             return true;
         }
+
+        Profiles.findOne({id: member.id}, (err, profile) => {
+            if (!profile) return;
+
+            profile.kicks.push({reason: args.toString(1), date: Date.now(), guildId: message.guild.id});
+
+            profile.save();
+        });
 
         return false;
     }
