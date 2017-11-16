@@ -1,15 +1,8 @@
-const Discord = require('discord.js');
+const { Guild, GuildMember, StreamDispatcher, VoiceConnection, Message, TextChannel } = require('discord.js');
 const ytdl = require('ytdl-core');
 
-const utils = require('../utils');
-const config = require('../../config.json');
-
-const GuildMember = Discord.GuildMember;
-const Guild = Discord.Guild;
-const Dispatcher = Discord.StreamDispatcher;
-const VoiceConnection = Discord.VoiceConnection;
-const Message = Discord.Message;
-const TextChannel = Discord.TextChannel;
+const utils = require('../util/utils');
+const { config } = require('../util/config');
 
 class MusicPlayer {
     /**
@@ -34,7 +27,7 @@ class MusicPlayer {
          */
         this.skipMessage = null;
         /**
-         * @type {Dispatcher}
+         * @type {StreamDispatcher}
          */
         this.dispatcher = null,
         /**

@@ -1,4 +1,4 @@
-const MusicPlayer = require('../types/musicplayer');
+const MusicPlayer = require('./musicplayer');
 
 /**
  * Class used for commands

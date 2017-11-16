@@ -1,8 +1,7 @@
-const Discord = require('discord.js');
-
-const Arguments = require('../types/arguments'); 
-const Message = Discord.Message;
-const MusicPlayer = require('../types/musicplayer');
+const { Message } = require('discord.js');
+const Arguments = require('./arguments'); 
+const MusicPlayer = require('./musicplayer');
+const utils = require('../util/utils');
 
 /**
  * Typing of Command
@@ -40,6 +39,11 @@ class Command {
          * @type {MusicPlayer}
          */
         this.musicPlayer = null;
+        /**
+         * Example of how to use the command
+         * @type {String}
+         */
+        this.example = '';
     }
 
     /**

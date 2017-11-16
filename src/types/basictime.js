@@ -1,4 +1,4 @@
-const utils = require('../utils');
+const utils = require('../util/utils');
 
 /**
  * Used for temp bans and other features
