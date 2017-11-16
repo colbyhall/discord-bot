@@ -16,7 +16,7 @@ module.exports = {
      */
     async execute(message, args) {
 
-        message.channel.send('**REEEEEE**', {
+        message.channel.send({
             files: ['https://media.discordapp.net/attachments/329329501945331712/376505116993257475/4564575466.gif']
         });
 
