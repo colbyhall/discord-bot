@@ -1,5 +1,4 @@
 const MusicPlayer = require('./musicplayer');
-
 /**
  * Class used for commands
  */

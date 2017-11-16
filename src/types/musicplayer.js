@@ -1,7 +1,6 @@
 const { Guild, GuildMember, StreamDispatcher, VoiceConnection, Message, TextChannel } = require('discord.js');
 const ytdl = require('ytdl-core');
 
-const utils = require('../util/utils');
 const { config } = require('../util/config');
 
 class MusicPlayer {

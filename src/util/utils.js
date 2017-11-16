@@ -1,12 +1,10 @@
 const fs = require('fs');
 const { Client, Message, MessageEmbed, Collection, GuildMember } = require('discord.js');
-const { ClientModes, Command, Arguments, CreativeClient } = require('../types');
+// const { Command, Arguments, CreativeClient } = require('../types');
 const { config, tokens } = require('./config');
 const request = require('superagent');
 
-
 const GuildData = require('../models/guild');
-
 /**
  * @param { String } searchFor
  * @returns { Boolean }
@@ -60,7 +58,7 @@ module.exports = {
      * @param { Function } callback Called after data is found
      */
     youtubeSearch(keywords, author, callback) {
-        let request_url = 'https://www.googleapis.com/youtube/v3/search' + `?part=snippet&q=${escape(keywords)}&key=${tokens.api.youtube}`;
+        let request_url = 'https://www.googleapis.com/youtube/v3/search' + `?part=snippet&q=${escape(keywords)}&key=${tokens.youtube}`;
 
         request.get(request_url, (err, res) => {
             if (res.statusCode == 200) {
@@ -108,7 +106,7 @@ module.exports = {
     canUse(member, command) {
 
         if (!command.roles) {
-            return false;
+            return true;
         }
 
         if (member.guild.available) {
@@ -145,9 +143,7 @@ module.exports = {
      * @returns { Boolean }
      */
     shouldCheckMessage(client, message) {
-        return (client.mode === ClientModes.DEBUG && message.channel.id != config.channels.testing) 
-        || (client.mode === ClientModes.SHIPPING) && message.channel.id == config.channels.testing 
-        || message.author.bot;
+        return message.author.bot;
     },
     /**
      * Gets all commands
@@ -156,21 +152,21 @@ module.exports = {
     getCommands() {
         let commands = new Collection();
         
-        const generalFiles = fs.readdirSync('../commands/general');
+        const generalFiles = fs.readdirSync('./commands/general');
         
         for (const file of generalFiles) {
             const command = require(`../commands/general/${file}`);
             commands.set(command.name, command);
         }
 
-        const moderationFiles = fs.readdirSync('../commands/moderation');
+        const moderationFiles = fs.readdirSync('./commands/moderation');
         
         for (const file of moderationFiles) {
             const command = require(`../commands/moderation/${file}`);
             commands.set(command.name, command);
         }
 
-        const musicFiles = fs.readdirSync('../commands/music');
+        const musicFiles = fs.readdirSync('./commands/music');
         
         for (const file of musicFiles) {
             const command = require(`../commands/music/${file}`);

@@ -35,7 +35,7 @@ module.exports = {
         if (args[1]) {
             member.createDM().then((channel) => {
                 const embed = utils.getEmbed()
-                .setAuthor(`${message.guild.name} Staff`, message.guild.iconURL());
+                .setAuthor(`${message.guild.name} Staff`, message.guild.iconURL())
                 .addField('You have been kicked', `Reason: "${args.toString(1)}"`);
                 
                 channel.send({embed});

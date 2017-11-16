@@ -8,7 +8,7 @@ module.exports = {
     category: 'moderation',
     help: '`;profile` gets your current profile\n'
         + '`;profile <user>` gets that users profile',
-    example: '`;profile @Colby`'
+    example: '`;profile @Colby`',
     /**
      * @param {Message} message 
      * @param {Arguments} args 

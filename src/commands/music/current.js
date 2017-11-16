@@ -1,7 +1,6 @@
 const { Message } = require('discord.js');
 const Arguments = require('../../types/arguments'); 
 const utils = require('../../util/utils');
-const utils = require('../utils');
 
 module.exports = {
     name: 'current',

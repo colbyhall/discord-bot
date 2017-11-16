@@ -1,5 +1,5 @@
 const { GuildMember } = require('discord.js');
-const { CreativeClient } = require('../types');
+const { CreativeClient, ClientModes } = require('../types');
 const utils = require('../util/utils');
 
 /**

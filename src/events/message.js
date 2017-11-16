@@ -1,7 +1,10 @@
 const { Message } = require('discord.js');
-const { CreativeClient } = require('../types');
+const { CreativeClient, ClientModes, Arguments } = require('../types');
 const { ProfileData, GuildData } = require('../models')
 const utils = require('../util/utils');
+const { config } = require('../util/config');
+
+console.log(require('../types/index'));
 
 /**
  * @param {CreativeClient} client 
@@ -18,7 +21,6 @@ module.exports = async (client, message) => {
     }
 
     ProfileData.findOne({id: message.author.id}, (err, profile) => {
-
         if (profile) {
             if (!profile.ranks) {
                 profile.ranks = [{guildId: message.guild.id, rank: points}]
@@ -47,7 +49,6 @@ module.exports = async (client, message) => {
         }
 
         ProfileData.create({id: message.author.id, guilds: [message.guild.id], ranks: [{guildId: message.guild.id, rank: points}]});
-
     });
 
     GuildData.findOne({id: message.guild.id}, (err, guild) => {

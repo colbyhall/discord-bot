@@ -1,7 +1,6 @@
 const { Message } = require('discord.js');
 const Arguments = require('./arguments'); 
 const MusicPlayer = require('./musicplayer');
-const utils = require('../util/utils');
 
 /**
  * Typing of Command
@@ -47,9 +46,9 @@ class Command {
     }
 
     /**
+     * 
      * @param {Message} message 
      * @param {Arguments} args 
-     * @returns {Promise<Boolean>}
      */
     async execute(message, args) { }
 }

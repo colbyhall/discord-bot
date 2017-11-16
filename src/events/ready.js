@@ -1,6 +1,8 @@
-const { CreativeClient, MusicPlayer } = require('../types');
+const CreativeClient = require('../types/creativeclient');
+const MusicPlayer = require('../types/musicplayer');
+const ClientModes = require('../types/clientmodes');
 const { GuildData } = require('../models')
-
+const { config } = require('../util/config');
 /**
  * @param {CreativeClient} client 
  */

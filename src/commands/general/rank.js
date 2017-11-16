@@ -10,7 +10,7 @@ module.exports = {
     category: 'general',
     help: '`;rank` gets current your current rank\n'
         + '`;rank <user>` to get that users rank',
-    example: '`;rank @Colby`'
+    example: '`;rank @Colby`',
     /**
      * @param {Message} message 
      * @param {Arguments} args 
