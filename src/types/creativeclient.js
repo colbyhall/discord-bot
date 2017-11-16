@@ -1,31 +1,31 @@
 const { Client, Collection } = require('discord.js');
 const Command = require('./command');
 const ClientModes = require('./clientmodes');
-const Events = require('../events');
 
 class CreativeClient extends Client {
-
+    
     constructor(options = {}) {
         super(options);
-
+        
         /**
          * MusicPlayers across all guilds
          * @type {Collection<String, Command>}
          */
         this.musicPlayers = new Collection();
-
+        
         /**
          * @type {ClientModes}
          */
         this.mode = ClientModes.SHIPPING;
-
+        
         this.setup();
     }
-
+    
     /**
      * @private
      */
     setup() {
+        const Events = require('../events');
         this.on('ready', () => Events.ready(this));
         this.on('message', message => Events.message(this, message));
         this.on('messageDelete', message => Events.messageDelete(this, message));

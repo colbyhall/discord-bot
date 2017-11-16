@@ -4,8 +4,6 @@ const { ProfileData, GuildData } = require('../models')
 const utils = require('../util/utils');
 const { config } = require('../util/config');
 
-console.log(require('../types/index'));
-
 /**
  * @param {CreativeClient} client 
  * @param {Message} message

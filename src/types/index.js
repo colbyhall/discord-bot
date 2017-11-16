@@ -1,6 +1,3 @@
-
-console.log('test');
-
 module.exports = {
     Arguments: require('./arguments'),
     BasicTime: require('./basictime'),

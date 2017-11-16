@@ -1,9 +1,7 @@
-const { CreativeClient, ClientModes, Arguments } = require('./types');
+const { ClientModes, CreativeClient, Arguments } = require('./types');
 const { tokens } = require('./util/config');
 
 const client = new CreativeClient();
-
-console.log(require('./types'))
 
 process.argv.forEach((val, index, array) => {
     if (val.startsWith('-')) {
