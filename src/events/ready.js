@@ -1,6 +1,4 @@
-const CreativeClient = require('../types/creativeclient');
-const MusicPlayer = require('../types/musicplayer');
-const ClientModes = require('../types/clientmodes');
+const { CreativeClien, MusicPlayer, ClientModes } = require('../types');
 const { GuildData } = require('../models')
 const { config } = require('../util/config');
 /**
@@ -19,7 +17,6 @@ module.exports = async (client) => {
      */
     GuildData.find((err, guilds) => {
         for (const guild of client.guilds.array()) {
-
             const data = guilds.find(guildData => {
                 return guildData.id === guild.id;
             });
@@ -27,7 +24,6 @@ module.exports = async (client) => {
             if (data) {
                 GuildData.create({id: guild.id, prefix: ';'});
             }
-
         }
     });
 

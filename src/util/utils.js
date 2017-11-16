@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { Client, Message, MessageEmbed, Collection, GuildMember } = require('discord.js');
-// const { Command, Arguments, CreativeClient } = require('../types');
+const { Command, Arguments, CreativeClient, ClientModes } = require('../types');
 const { config, tokens } = require('./config');
 const request = require('superagent');
 
@@ -58,9 +58,10 @@ module.exports = {
      * @param { Function } callback Called after data is found
      */
     youtubeSearch(keywords, author, callback) {
-        let request_url = 'https://www.googleapis.com/youtube/v3/search' + `?part=snippet&q=${escape(keywords)}&key=${tokens.youtube}`;
+        let requestUrl = 'https://www.googleapis.com/youtube/v3/search' + `?part=snippet&q=${escape(keywords)}&key=${tokens.youtube}`;
 
-        request.get(request_url, (err, res) => {
+        request.get(requestUrl, (err, res) => {
+            console.log('test');
             if (res.statusCode == 200) {
                 const body = res.body;
                 if (body.items.length == 0) {
@@ -68,29 +69,32 @@ module.exports = {
                     return;
                 }
                 
-                let videos = []
+                let videos = [];
 
                 for (let item of body.items) {
                     if (item.id.kind == 'youtube#video') {
-                        var video_id = item.id.videoId;
+                        const videoId = item.id.videoId;
                         videos.push({
-                            url: `https://www.youtube.com/watch?v=${video_id}`,
+                            url: `https://www.youtube.com/watch?v=${videoId}`,
                             title: item.snippet.title,
                             thumbnail: item.snippet.thumbnails.medium.url,
                             requestor: author,
-                            video_id: item.id.videoId
+                            videoId: item.id.videoId
                         });
                     }
                 }
+
                 callback({
                     results: videos,
                     error: ""
                 });
+                return;
             }
             else {
                 callback({ error: "Couldn't contact Youtube" });
             }
         });
+        return;
     },
     spotifySearch(keywords, callback) {
         request.get('https://api.spotify.com/v1/authorize', (err, res) => {
@@ -143,7 +147,9 @@ module.exports = {
      * @returns { Boolean }
      */
     shouldCheckMessage(client, message) {
-        return message.author.bot;
+        return (client.mode === ClientModes.DEBUG && message.channel.id != config.channels.testing) 
+        || (client.mode === ClientModes.SHIPPING) && message.channel.id == config.channels.testing 
+        || message.author.bot;
     },
     /**
      * Gets all commands

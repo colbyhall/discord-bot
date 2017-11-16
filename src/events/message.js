@@ -77,7 +77,6 @@ module.exports = async (client, message) => {
                 }
     
                 argsObj.musicPlayer = client.musicPlayers.get(message.guild.id);
-    
                 command.execute(message, argsObj).then((result) => {
                     if (result) {
                         utils.auditMessage(message.member, `Used "${config.prefix + command.name} ${argsObj.toString()}" in ${message.channel.toString()}`);

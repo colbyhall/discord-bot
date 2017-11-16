@@ -24,7 +24,7 @@ module.exports = {
         const guildMember = message.member;
 
         if (guildMember.voiceChannel && guildMember.voiceChannel.joinable) {
-            guildMember.voiceChannel.join().then((connection) => {
+            guildMember.voiceChannel.join().then(connection => {
                 args.musicPlayer.voiceConnection = connection;
 
                 if (args.musicPlayer.searchResults) {
@@ -50,7 +50,8 @@ module.exports = {
                     }
                 }
 
-                utils.youtubeSearch(args.toString(), message.member, (musicData) => {
+
+                utils.youtubeSearch(args.toString(), message.member, musicData => {
                     if (musicData.error === '') {
                         if (args.musicPlayer.queue.length != 0) {
                             let embed = utils.getEmbed();
@@ -61,6 +62,7 @@ module.exports = {
                         }
 
                         args.musicPlayer.add(musicData.results[0]);
+                        return;
                     }
                 });
             });
