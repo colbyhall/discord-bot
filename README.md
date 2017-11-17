@@ -1,7 +1,10 @@
 # Creative Logic
 
+## Want to add the bot?
+* [Click here](https://discordapp.com/oauth2/authorize/?permissions=0&scope=bot&client_id=378614988388040704) to invite the bots with the right privileges. Then run the ';setup' command
+
 ## Info
-* Multiple projects for our discord server including our website, discord bot, and admin interface
+* Dynamic discord bot with a broad guild and profile system
 
 * Using [Discord.js](https://github.com/hydrabolt/discord.js/) with help from the people on their [discord](https://discord.gg/bRCvFy9).
 
