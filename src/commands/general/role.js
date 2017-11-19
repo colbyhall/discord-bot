@@ -30,8 +30,10 @@ module.exports = {
             
             let description = '';
             
-            for (let role of this.roles) {
-                description += `${guild.roles.get(role).name}\n`;
+            if (this.roles) {
+                for (let role of this.roles) {
+                    description += `${guild.roles.get(role).name}\n`;
+                }
             }
     
             embed.setDescription(description);
