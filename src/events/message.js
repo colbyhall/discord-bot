@@ -44,7 +44,13 @@ module.exports = async (client, message) => {
 
             const prevRank = utils.getRankFromTotalPoints(rank.level);
 
-            rank.level += points;
+            if (!rank.level) {
+                rank.level = points;
+            }
+            else {
+                rank.level += points;
+            }
+
             rank.lastMessageTime = Date.now();
 
             if (utils.getRankFromTotalPoints(rank.level) > prevRank) {
