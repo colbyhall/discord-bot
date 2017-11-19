@@ -40,7 +40,7 @@ module.exports = async (client, message) => {
 
             profile.save();
 
-            if (new Date().getTime() - rank.lastMessageTime.getTime() < 1000 * 60) return;
+            if (rank.lastMessageTime && new Date().getTime() - rank.lastMessageTime.getTime() < 1000 * 60) return;
 
             const prevRank = utils.getRankFromTotalPoints(rank.level);
 
