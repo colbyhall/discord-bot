@@ -1,7 +1,7 @@
 const { Message } = require('discord.js');
 const { CreativeClient, ClientModes, Arguments } = require('../types');
 const { ProfileData, GuildData } = require('../models')
-const utils = require('../util/utils');
+const utils = require('../util');
 const { config } = require('../util/config');
 
 /**

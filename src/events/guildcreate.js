@@ -1,8 +1,7 @@
 const { Guild } = require('discord.js');
 const { CreativeClient, MusicPlayer } = require('../types');
 const { GuildData } = require('../models');
-const utils = require('../util/utils');
-
+const utils = require('../util');
 /**
  * @param { CreativeClient } client 
  * @param { Guild } guild

@@ -1,6 +1,6 @@
 const { Message } = require('discord.js');
 const Arguments = require('../../types/arguments'); 
-const utils = require('../../util/utils');
+const utils = require('../../util');
 const GuildData = require('../../models/guild');
 
 module.exports = {

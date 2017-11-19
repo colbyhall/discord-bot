@@ -1,6 +1,6 @@
 const { Message } = require('discord.js');
 const Arguments = require('../../types/arguments'); 
-const utils = require('../../util/utils');
+const utils = require('../../util');
 
 module.exports = {
     name: 'play',
@@ -14,6 +14,7 @@ module.exports = {
      * @returns {Promise<Boolean>}
      */
     async execute(message, args) {
+
         if (args.length == 0) {
             utils.executeCommandHelp(message, this);
             return false;
@@ -51,17 +52,17 @@ module.exports = {
                 }
 
 
-                utils.youtubeSearch(args.toString(), message.member, musicData => {
-                    if (musicData.error === '') {
+                utils.youtubeSearch(args.toString(), message.member, (err, data) => {
+                    if (!err) {
                         if (args.musicPlayer.queue.length != 0) {
                             let embed = utils.getEmbed();
                             embed.setTitle('Music Added');
-                            embed.setDescription(`[${musicData.results[0].title}](${musicData.results[0].url})\nRequested by ${message.author.toString()}`);
-                            embed.setImage(musicData.results[0].thumbnail);
+                            embed.setDescription(`[${data[0].title}](${data[0].url})\nRequested by ${message.author.toString()}`);
+                            embed.setImage(data[0].thumbnail);
                             message.channel.send({embed});
                         }
 
-                        args.musicPlayer.add(musicData.results[0]);
+                        args.musicPlayer.add(data[0]);
                         return;
                     }
                 });

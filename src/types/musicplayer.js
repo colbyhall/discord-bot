@@ -1,4 +1,4 @@
-const { Guild, GuildMember, StreamDispatcher, VoiceConnection, Message, TextChannel } = require('discord.js');
+const { Guild, GuildMember, StreamDispatcher, VoiceConnection, Message, TextChannel, MessageEmbed } = require('discord.js');
 const ytdl = require('ytdl-core');
 
 const { config } = require('../util/config');
@@ -93,7 +93,7 @@ class MusicPlayer {
                 const channel = this.guild.channels.get(this.textChannel);
                 
                 if (channel) {
-                    let embed = new Discord.MessageEmbed();
+                    let embed = new MessageEmbed();
                     embed.setColor(0x8754ff);
                     embed.setTimestamp();
                     embed.setFooter("love, your friendly bot");

@@ -58,24 +58,23 @@ module.exports = {
      * @param { Function } callback Called after data is found
      */
     youtubeSearch(keywords, author, callback) {
-        let requestUrl = 'https://www.googleapis.com/youtube/v3/search' + `?part=snippet&q=${escape(keywords)}&key=${tokens.youtube}`;
+        let request_url = 'https://www.googleapis.com/youtube/v3/search' + `?part=snippet&q=${escape(keywords)}&key=${tokens.youtube}`;
 
-        request.get(requestUrl, (err, res) => {
+        request.get(request_url, (err, res) => {
             console.log('test');
             if (res.statusCode == 200) {
                 const body = res.body;
                 if (body.items.length == 0) {
-                    callback({ error: "Couldn't find any videos matching those tags" });
+                    callback('Couldn\'t find any videos matching those tags');
                     return;
                 }
                 
-                let videos = [];
+                let videos = []
 
                 for (let item of body.items) {
                     if (item.id.kind == 'youtube#video') {
-                        const videoId = item.id.videoId;
                         videos.push({
-                            url: `https://www.youtube.com/watch?v=${videoId}`,
+                            url: `https://www.youtube.com/watch?v=${item.id.videoId}`,
                             title: item.snippet.title,
                             thumbnail: item.snippet.thumbnails.medium.url,
                             requestor: author,
@@ -83,18 +82,12 @@ module.exports = {
                         });
                     }
                 }
-
-                callback({
-                    results: videos,
-                    error: ""
-                });
-                return;
+                callback(null, videos);
             }
             else {
-                callback({ error: "Couldn't contact Youtube" });
+                callback('Couldn\'t contact Youtube');
             }
         });
-        return;
     },
     spotifySearch(keywords, callback) {
         request.get('https://api.spotify.com/v1/authorize', (err, res) => {

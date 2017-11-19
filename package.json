@@ -1,5 +1,5 @@
 {
-  "name": "CreativeLogic",
+  "name": "creative-logic",
   "version": "1.0.0",
   "description": "",
   "repository": {
@@ -14,11 +14,10 @@
   "homepage": "https://github.com/Colbeyyy/Creative-Logic#readme",
   "dependencies": {
     "discord.js": "github:hydrabolt/discord.js",
-    "ffmpeg": "0.0.4",
-    "ffmpeg-binaries": "*",
+    "ffmpeg-binaries": "3.2.2-3",
     "jimp": "^0.2.28",
     "moment": "^2.19.2",
-    "mongoose": "^4.13.3",
+    "mongoose": "^4.13.4",
     "opusscript": "0.0.4",
     "spotify-web-api-node": "^2.5.0",
     "superagent": "^3.8.1",
