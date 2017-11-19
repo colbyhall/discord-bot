@@ -41,12 +41,17 @@ module.exports = {
 
         ProfileData.findOne({id: member.user.id}, (err, profile) => {
             if (profile) {
+
+                const guild = profile.guilds.find((guild) => {
+                    return guild.id === message.guild.id;
+                });
+    
+                if (!guild) return;
+
                 const embed = utils.getEmbed();
                 if (!args[1]) {
-                    for (let i = 0; i < profile.warnings.length; i++) {
-                        if (profile.warnings[i].guildId == message.guild.id) {
-                            embed.addField(`${i + 1}: "${profile.warnings[i].reason}"`, `${moment(profile.warnings[i].date).toString()}`);
-                        }
+                    for (let i = 0; i < guild.warnings.length; i++) {
+                        embed.addField(`${i + 1}: "${guild.warnings[i].reason}"`, `${moment(guild.warnings[i].date).toString()}`);
                     }
 
                     if (embed.fields.length == 0) {
@@ -57,16 +62,10 @@ module.exports = {
                     return;
                 }
                 else if (args[1] === 'clear') {
-                    let warnings = [];
-                    for(let i = 0; i < profile.warnings.length; i++) {
-                        if (profile.warnings[i].guildId != message.guild.id) {
-                            warnings.push(profile.warnings[1]);
-                        }
-                    }
                     embed.setDescription(`Removed warnings from ${member.toString()}`);
                     message.channel.send({embed});
 
-                    profile.warnings = warnings;
+                    guild.warnings = [];
                     profile.save();
                     return;
                 }
@@ -82,13 +81,15 @@ module.exports = {
                     embed.setDescription(`Removing warning "${profile.warnings[parsed - 1].reason}" from ${moment(profile.warnings[parsed - 1].date).toString()}`);
                     message.channel.send({embed});
 
-                    profile.warnings.splice(parsed - 1, 1);
+                    guild.warnings.splice(parsed - 1, 1);
                     profile.save();
 
                     return;
                 }
 
-                profile.warnings.push({reason: args.toString(1), date: Date.now(), guildId: message.guild.id})
+
+                
+                guild.warnings.push({reason: args.toString(1), date: Date.now()})
                 profile.save();
 
                 member.createDM().then((channel) => {

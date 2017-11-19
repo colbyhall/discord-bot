@@ -34,11 +34,22 @@ module.exports = async (client, member) => {
 
     ProfileData.findOne({id: member.id}, (err, profile) => {
         if (!profile) {
-            ProfileData.create({id: member.id, guilds: [message.guild.id]});
+            ProfileData.create({
+                id: member.id, 
+                guilds: [{
+                    id: message.guild.id,
+                    rank: {level: 0, notify: true},
+                    meta: {joinedDate: Date.now(), messages: 0, mentions: 0, words: 0}
+                }]
+            });
             return;
         }
 
-        profile.guilds.push(member.guild.id);
+        profile.guilds.push({
+            id: message.guild.id,
+            rank: {level: 0, notify: true},
+            meta: {joinedDate: Date.now(), messages: 0, mentions: 0, words: 0}
+        });
         profile.save();
     });
 }

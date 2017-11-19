@@ -53,7 +53,13 @@ module.exports = {
         ProfileData.findOne({id: member.id}, (err, profile) => {
             if (!profile) return;
 
-            profile.bans.push({reason: args.toString(1), date: Date.now(), guildId: message.guild.id});
+            const guild = profile.guilds.find((guild) => {
+                return guild.id === message.guild.id;
+            });
+
+            if (!guild) return;
+
+            guild.bans.push({reason: args.toString(1), date: Date.now()});
 
             profile.save();
         });

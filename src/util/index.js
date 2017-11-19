@@ -61,7 +61,6 @@ module.exports = {
         let request_url = 'https://www.googleapis.com/youtube/v3/search' + `?part=snippet&q=${escape(keywords)}&key=${tokens.youtube}`;
 
         request.get(request_url, (err, res) => {
-            console.log('test');
             if (res.statusCode == 200) {
                 const body = res.body;
                 if (body.items.length == 0) {

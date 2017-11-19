@@ -36,7 +36,16 @@ module.exports = {
         });
 
         ProfileData.findOne({id: member.id}, (err, profile) => {
-            profile.mutes.push({guildId: message.guild.id, channelId: message.channel.id});
+
+            if (!profile) return;
+
+            const guild = profile.guilds.find((guild) => {
+                return guild.id === message.guild.id;
+            });
+
+            if (!guild) return;
+
+            guild.mutes.push({channelId: message.channel.id});
 
             profile.save();
         });

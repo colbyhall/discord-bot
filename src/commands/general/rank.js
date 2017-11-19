@@ -34,11 +34,12 @@ module.exports = {
 
         ProfileData.findOne({id: author.id}, (err, profile) => {
             if (profile) {
-                const rank = profile.ranks.find((rank) => {
-                    return rank.guildId == message.guild.id;
+                const guild = profile.guilds.find((guild) => {
+                    return guild.id === message.guild.id;
                 });
+
                 embed.setAuthor(`${author.username}#${author.discriminator}`, author.avatarURL());
-                embed.setDescription(`Rank: ${utils.getRankFromTotalPoints(rank.rank)} (${rank.rank}/${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank.rank) + 1)})`);
+                embed.setDescription(`Rank: ${utils.getRankFromTotalPoints(guild.rank.level)} (${guild.rank.level}/${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(guild.rank.level) + 1)})`);
                 message.channel.send({embed});
             }
         })

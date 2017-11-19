@@ -11,6 +11,7 @@ let guildSchema = mongoose.Schema({
         rules: String
     },
     prefix: String,
+    setupComplete: Boolean,
     commands: [{name: String, roles: [String], enabled: Boolean}],
     tempBans: [{id: String, time: Object}],
     systems: [{name: String, enabled: Boolean}]

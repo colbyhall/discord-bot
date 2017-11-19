@@ -1,7 +1,7 @@
 # Creative Logic
 
 ## Want to add the bot?
-* [Click here](https://discordapp.com/oauth2/authorize/?permissions=271706238&scope=bot&client_id=378614988388040704) to invite the bots with the right privileges. Then run the ';setup' command
+* [Click here](https://discordapp.com/oauth2/authorize/?permissions=271706238&scope=bot&client_id=378614988388040704) to invite the bots with the right privileges. Get it in a private channel and starting running through the ;command command
 
 ## Info
 * Dynamic discord bot with a broad guild and profile system

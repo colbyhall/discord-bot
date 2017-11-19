@@ -5,12 +5,35 @@ let profileSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    guilds: [],
-    warnings: [{reason: String, date: Date, guildId: String}],
-    kicks: [{reason: String, date: Date, guildId: String}],
-    bans: [{reason: String, date: Date, guildId: String}],
-    ranks: [{guildId: String, rank: Number, notify: Boolean}],
-    mutes: [{guildId: String, channelId: String}]
+    guilds: [{
+        id: String,
+        mutes: [{
+            channelId: String
+        }],
+        warnings: [{
+            reason: String,
+            date: Date
+        }],
+        kicks: [{
+            reason: String,
+            date: Date
+        }],
+        bans: [{
+            reason: String,
+            date: Date
+        }],
+        rank: {
+            level: Number,
+            notify: Boolean,
+            lastMessageTime: Date
+        },
+        meta: {
+            messages: Number,
+            words: Number,
+            mentions: Number,
+            joinedDate: Date
+        }
+    }]
 }, { collection: 'profiles' });
 
 let profile = module.exports = mongoose.model('Profile', profileSchema);

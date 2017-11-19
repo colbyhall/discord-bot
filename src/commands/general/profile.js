@@ -32,31 +32,25 @@ module.exports = {
             if (!profile) {
                 return;
             }
+
+            const guild = profile.guilds.find((guild) => {
+                return guild.id === message.guild.id;
+            });
+
+            if (!guild) return;
+
             const embed = utils.getEmbed();
 
             embed.setAuthor(`${member.displayName}#${member.user.discriminator}`, member.user.avatarURL());
 
-            const rank = profile.ranks.find((rank) => {
-                return rank.guildId == message.guild.id;
-            }).rank;
+            const rank = guild.rank.level;
 
-            const warnings = profile.warnings.filter((warning) => {
-                return warning.guildId === message.guild.id;
-            }).length;
+            embed.setDescription(
+                `Rank: ${utils.getRankFromTotalPoints(rank)} (${rank} / ${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank) + 1)})`
+                + `\n\nThis user has ${guild.warnings.length} warnings, ${guild.mutes.length} mutes, ${guild.kicks.length} kicks, and ${guild.bans.length} bans`
+            );
 
-            const mutes = profile.mutes.filter((mute) => {
-                return mute.guildId === message.guild.id;
-            }).length;
-
-            const kicks = profile.kicks.filter((kick) => {
-                return kick.guildId === message.guild.id;
-            }).length;
-
-            const bans = profile.bans.filter((ban) => {
-                return ban.guildId === message.guild.id;
-            }).length;
-
-            embed.setDescription(`**Rank:** ${utils.getRankFromTotalPoints(rank)} (${rank} / ${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank) + 1)})\n\nThis user has ${warnings} warnings, ${mutes} mutes, ${kicks} kicks, and ${bans} bans`);
+            embed.addField('Meta', `Messages Sent: ${guild.meta.messages}\nWords Sent: ${guild.meta.words}\nMentions: ${guild.meta.mentions ? guild.meta.mentions : 0}`);
 
             message.channel.send({embed});
         });
