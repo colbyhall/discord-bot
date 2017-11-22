@@ -9,6 +9,7 @@ module.exports = client => {
 
     router.get('/', (req, res) =>
     {
+        res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify({
             err: '',
             uptime: client.uptime,
