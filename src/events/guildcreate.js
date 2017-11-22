@@ -2,6 +2,7 @@ const { Guild } = require('discord.js');
 const { CreativeClient, MusicPlayer } = require('../types');
 const { GuildData, ProfileData } = require('../models');
 const utils = require('../util');
+const { config } = require('../util/config');
 /**
  * @param { CreativeClient } client 
  * @param { Guild } guild
@@ -36,6 +37,15 @@ module.exports = async (client, guild) => {
 
         });
     }
+
+    const home = client.guilds.get(config.homeServer);
+
+    
+    if (home) {
+        const botMember = home.members.get(client.user.id);
+        utils.auditMessage(botMember, `Bot added to ${guild.name}`);
+    }
+
 
     client.musicPlayers.set(guild.id, new MusicPlayer(guild));
 }

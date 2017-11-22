@@ -7,5 +7,6 @@ module.exports = {
     guildMemberRemove: require('./guildmemberremove'),
     messageReactionAdd: require('./messagereactionadd'),
     voiceStateUpdate: require('./voicestateupdate'),
-    guildCreate: require('./guildcreate')
+    guildCreate: require('./guildcreate'),
+    guildDelete: require('./guilddelete')
 }
