@@ -58,7 +58,7 @@ module.exports = async (client, message) => {
                 return guild.id === message.guild.id;
             });
 
-            if (!guild) {
+            if (!guildData) {
                 profile.guilds.push({
                     id: message.guild.id,
                     rank: {level: words, lastMessageTime: Date.now()},
