@@ -32,7 +32,6 @@ module.exports = async (client) => {
         }
     }
    
-    
     /**
      * Emits a message to the Creative Logic server when debugging
      */

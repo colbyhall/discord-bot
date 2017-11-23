@@ -15,7 +15,7 @@ module.exports = async (client, message) => {
 
     GuildData.findOne({id: message.guild.id}, (err, guild) => {
 
-        if (guild.mode !== client.mode && client.mode !== ClientModes.DEBUG) return;
+        if (guild.mode != client.mode && client.mode != ClientModes.DEBUG) return;
 
         if (message.content.startsWith(guild ? guild.prefix: config.prefix)) {
             const args = message.content.slice(config.prefix.length).split(' ');
