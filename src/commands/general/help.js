@@ -46,7 +46,7 @@ module.exports = {
             const commands = utils.getCommands().array();
 
             for (const command of commands) {
-                if (command.name != this.name && utils.canUse(message.member, this) && command.category !== 'moderation') {
+                if (command.name != this.name && utils.canUse(message.member, this) && command.category !== 'moderation' && command.help.length < 1024) {
                     embed.addField(command.name, command.help);
                 }
             }
