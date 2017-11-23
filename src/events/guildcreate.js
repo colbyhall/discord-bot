@@ -1,5 +1,5 @@
 const { Guild } = require('discord.js');
-const { CreativeClient, MusicPlayer } = require('../types');
+const { CreativeClient, MusicPlayer, ClientModes } = require('../types');
 const { GuildData, ProfileData } = require('../models');
 const utils = require('../util');
 const { config } = require('../util/config');
@@ -8,6 +8,9 @@ const { config } = require('../util/config');
  * @param { Guild } guild
  */
 module.exports = async (client, guild) => {
+
+    // if (client.mode !== ClientModes.SHIPPING) return;
+
     GuildData.findOne({id: guild.id}, (err, guildData) => {
         if (!guildData) {
             GuildData.create({id: guild.id, prefix: ';', setupComplete: false});
@@ -18,19 +21,10 @@ module.exports = async (client, guild) => {
         ProfileData.findOne({id: member.id}, (err, profile) => {
 
             if (!profile) {
-                ProfileData.create({
-                    id: member.id,
-                    guilds: [{
-                        id: guild.id,
-                        meta: {joinedDate: Date.now()}
-                    }]
-                });
+                ProfileData.create({id: member.id});
             }
             else {
-                profile.guilds.push({
-                    id: guild.id,
-                    meta: {joinedDate: Date.now(), messages: 0, mentions: 0, words: 0}
-                });
+                profile.guilds.push({id: guild.id});
 
                 profile.save();
             }
@@ -40,7 +34,6 @@ module.exports = async (client, guild) => {
 
     const home = client.guilds.get(config.homeServer);
 
-    
     if (home) {
         const botMember = home.members.get(client.user.id);
         utils.auditMessage(botMember, `Bot added to ${guild.name}`);

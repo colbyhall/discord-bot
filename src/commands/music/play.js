@@ -33,15 +33,15 @@ module.exports = {
 
                     if (index != NaN && args.musicPlayer.searchResults.length > 0 && index <= args.musicPlayer.searchResults.length) {
                         
-                        if (args.musicPlayer.queue.length === 0) {
+                        if (args.musicPlayer.queue.length != 0) {
                             let embed = utils.getEmbed();
                             embed.setTitle('Music Added');
-                            embed.setDescription(`[${args.musicPlayer.searchResults[index].title}](${args.musicPlayer.searchResults[index].url})\nRequested by ${message.author.toString()}`);
-                            embed.setImage(args.musicPlayer.searchResults[index].thumbnail);
+                            embed.setDescription(`[${args.musicPlayer.searchResults[index - 1].title}](${args.musicPlayer.searchResults[index - 1].url})\nRequested by ${message.author.toString()}`);
+                            embed.setImage(args.musicPlayer.searchResults[index - 1].thumbnail);
                             
                             message.channel.send({embed});
                         }
-                        args.musicPlayer.add(args.musicPlayer.searchResults[index]);
+                        args.musicPlayer.add(args.musicPlayer.searchResults[index - 1]);
                         args.musicPlayer.searchResults = null;
 
                         return false;

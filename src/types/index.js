@@ -5,5 +5,6 @@ module.exports = {
     Command: require('./command'),
     MusicPlayer: require('./musicplayer'),
     CreativeClient: require('./creativeclient'),
-    DataBase: require('./database')
+    DataBase: require('./database'),
+    BlackListActions: require('./blacklistactions')
 }

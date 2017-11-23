@@ -18,31 +18,7 @@ module.exports = async (client) => {
     for (const guild of client.guilds.array()) {
         GuildData.findOne({id: guild.id}, (err, guildData) => {
             if (!guildData) {
-                GuildData.create({id: guild.id, prefix: ';', setupComplete: false});
-                
-                for (const member of guild.members.array()) {
-                    ProfileData.findOne({id: member.id}, (err, profile) => {
-            
-                        if (!profile) {
-                            ProfileData.create({
-                                id: member.id,
-                                guilds: [{
-                                    id: guild.id,
-                                    meta: {joinedDate: Date.now(), messages: 0, mentions: 0, words: 0}
-                                }]
-                            });
-                        }
-                        else {
-                            profile.guilds.push({
-                                id: guild.id,
-                                meta: {joinedDate: Date.now(), messages: 0, mentions: 0, words: 0}
-                            });
-            
-                            profile.save();
-                        }
-            
-                    });
-                }
+                GuildData.create({id: guild.id});
             }
         });
     }
@@ -56,12 +32,14 @@ module.exports = async (client) => {
         }
     }
    
+    
     /**
      * Emits a message to the Creative Logic server when debugging
      */
-    if (client.mode === ClientModes.SHIPPING) {
+    if (client.mode !== ClientModes.DEBUG) {
         return;
     }
+    
 
     const channel = client.channels.get(config.channels.testing);
     if (channel) {

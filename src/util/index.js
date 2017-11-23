@@ -176,14 +176,15 @@ module.exports = {
     /**
      * 
      * @param { Number } totalPoints 
+     * @param { Number } exponential 
      * @returns { Number }
      */
-    getRankFromTotalPoints(totalPoints) {
+    getRankFromTotalPoints(totalPoints, exponential) {
         let points = 0;
         let rank = 0;
         while(points < totalPoints) {
             rank++;
-            points += config.rank.exponential * rank;
+            points += exponential * rank;
         }
 
         return rank;
@@ -191,12 +192,13 @@ module.exports = {
     /**
      * 
      * @param { Number } rank 
+     * @param { Number } exponential 
      * @returns { Number }
      */
-    getTotalPointsFromRank(rank) {
+    getTotalPointsFromRank(rank, exponential) {
         let points = 0;
         for (let i = 0; i < rank; i++) {
-            points += config.rank.exponential * i;
+            points += exponential * i;
         }
 
         return points;

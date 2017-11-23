@@ -16,7 +16,7 @@ class CreativeClient extends Client {
         /**
          * @type {ClientModes}
          */
-        this.mode = ClientModes.SHIPPING;
+        this.mode = ClientModes.DEBUG;
         
         this.setup();
     }

@@ -45,7 +45,7 @@ module.exports = {
 
             if (!guild) return;
 
-            guild.mutes.push({channelId: message.channel.id});
+            guild.mutes.push(message.channel.id);
 
             profile.save();
         });

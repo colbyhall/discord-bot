@@ -14,5 +14,11 @@ module.exports = async (client, message) => {
     if (message.content === '') {
         return;
     }
-    utils.auditMessage(message.member, `Removed "${message.content}" from ${message.channel.toString()}`);
+
+    GuildData.findOne({id: member.guild.id}, (err, guild) => {
+        if (guild.mode !== client.mode) return;
+
+        utils.auditMessage(message.member, `Removed "${message.content}" from ${message.channel.toString()}`);
+    });
+
 }

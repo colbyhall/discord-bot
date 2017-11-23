@@ -15,5 +15,10 @@ module.exports = async (client, oldMessage, newMessage) => {
     if (oldMessage.author.bot || (oldMessage.content === '' && newMessage.content === '') || oldMessage.content === newMessage.content) {
         return;
     }
-    utils.auditMessage(message.member, `Changed "${oldMessage.content}" to "${newMessage.content}" in ${newMessage.channel.toString()}`);
+
+    GuildData.findOne({id: member.guild.id}, (err, guild) => {
+        if (guild.mode !== client.mode) return;
+        
+        utils.auditMessage(message.member, `Changed "${oldMessage.content}" to "${newMessage.content}" in ${newMessage.channel.toString()}`);
+    });
 }

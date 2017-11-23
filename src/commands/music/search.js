@@ -17,15 +17,15 @@ module.exports = {
             return false;
         }
     
-        utils.youtubeSearch(args.toString(), message.author, (musicData) => {
-            if (musicData.error == '') {
-                let embed = utils.getEmbed();
+        utils.youtubeSearch(args.toString(), message.author, (err, data) => {
+            if (!err) {
+                const embed = utils.getEmbed();
                 embed.setTitle('Search Results');
-                for (let i = 0; i < musicData.results.length; i++)
+                for (let i = 0; i < data.length; i++)
                 {
-                    embed.addField(`${i + 1}: ${musicData.results[i].title}`, musicData.results[i].url);
+                    embed.addField(`${i + 1}: ${data[i].title}`, data[i].url);
                 }
-                args.musicPlayer.searchResults = musicData.results;
+                args.musicPlayer.searchResults = data;
                 message.channel.send({embed});
             }
         });

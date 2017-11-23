@@ -11,5 +11,12 @@ module.exports = async (client, member) => {
     {
         return;
     }
-    utils.auditMessage(member, `Left...`);
+
+    GuildData.findOne({id: member.guild.id}, (err, guild) => {
+
+        if (guild.mode !== client.mode) return;
+
+        utils.auditMessage(member, `Left...`);
+    });
+
 }

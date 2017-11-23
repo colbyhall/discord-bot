@@ -5,12 +5,18 @@ const client = new CreativeClient();
 
 process.argv.forEach((val, index, array) => {
     if (val.startsWith('-')) {
-        let command = val.substr(1);
+        const command = val.substr(1).toLowerCase();
 
         switch (command) {
-            case 'debug': {
+            case 'debug': 
                 client.mode = ClientModes.DEBUG;
-            }
+                break;
+            case 'development': 
+                client.mode = ClientModes.DEVELOPMENT;
+                break;
+            case 'shipping': 
+                client.mode = ClientModes.SHIPPING;
+                break;
         }
     }
 });
