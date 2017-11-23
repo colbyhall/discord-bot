@@ -21,5 +21,4 @@ process.argv.forEach((val, index, array) => {
     }
 });
 
-
 client.login(tokens.discord);
