@@ -23,9 +23,14 @@ module.exports = async (client) => {
             }
 
             /**
-             * Log the guild data for each server
+             * Log the guild data for each server if we're in debug mode
              */
-            console.log(guildData);
+            if (client.mode === ClientModes.DEBUG) {
+                
+                console.log(client.guilds.get(guildData.id).name);
+                console.log(guildData + "\n");
+            
+            }
         });
     }
 
