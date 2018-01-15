@@ -3,20 +3,28 @@ const { CreativeClient } = require('../types');
 const utils = require('../util');
 
 /**
+ * This is called when a reaction is added to a message
  * @param { CreativeClient } client 
  * @param { MessageReaction } messageReaction
  * @param { User } user
  */
 module.exports = async (client, messageReaction, user) => {
 
+    /**
+     * Get this servers musicplayer
+     */
     const musicPlayer = client.musicPlayers.get(messageReaction.message.guild.id);
     
-    if (!musicPlayer.voiceConnection || messageReaction.emoji.name != 'upvote') {
-        return;
-    }
+    /**
+     * If we're not in a vc this stop execution
+     */
+    if (!musicPlayer.voiceConnection || messageReaction.emoji.name != 'upvote') return;
 
     const memberCount = client.channels.get(musicPlayer.voiceConnection.channel.id).members.array().length;
 
+    /**
+     * All of this is broken
+     */
     if (messageReaction.message.id === musicPlayer.skipMessage.id) {
 
         if (user.id === musicPlayer.skipMessage.requestor.id) {

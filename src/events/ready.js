@@ -2,6 +2,7 @@ const { CreativeClient, MusicPlayer, ClientModes } = require('../types');
 const { GuildData, ProfileData } = require('../models')
 const { config } = require('../util/config');
 /**
+ * This is called when the bot is finally logged in
  * @param {CreativeClient} client 
  */
 module.exports = async (client) => {
@@ -20,6 +21,11 @@ module.exports = async (client) => {
             if (!guildData) {
                 GuildData.create({id: guild.id});
             }
+
+            /**
+             * Log the guild data for each server
+             */
+            console.log(guildData);
         });
     }
 
@@ -33,15 +39,17 @@ module.exports = async (client) => {
     }
    
     /**
-     * Emits a message to the Creative Logic server when debugging
+     * Returns if the bot is not in debug mode
      */
     if (client.mode !== ClientModes.DEBUG) {
         return;
     }
     
-
+    /**
+     * Message that is sent when ready
+     */
     const channel = client.channels.get(config.channels.testing);
     if (channel) {
-        channel.send('I\'m alive again');
+        channel.send('Ready :edgy:');
     }
 }

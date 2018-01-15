@@ -4,14 +4,20 @@ const { GuildData, ProfileData } = require('../models');
 const utils = require('../util');
 
 /**
+ * This is called when someone joins a guild that the bot is in
  * @param { CreativeClient } client 
  * @param { GuildMember } member
  */
 module.exports = async (client, member) => {
-    if (client.mode === ClientModes.DEBUG) {
-        return;
-    }
 
+    /**
+     * Debug should't even mess with this
+     */
+    if (client.mode == ClientModes.DEBUG) return;
+
+    /**
+     * Setup the profile data for this user
+     */
     GuildData.findOne({id: member.guild.id}, (err, guild) => {
         if (!guild || !guild.channels || !guild.channels.welcome) return;
 
@@ -31,6 +37,9 @@ module.exports = async (client, member) => {
             profile.save();
         });
 
+        /**
+         * Shoot a message to the welcome channel saying that the user joined
+         */
         const welcomeChannel = member.guild.channels.get(guild.channels.welcome);
 
         if (guild.channels.rules) {
