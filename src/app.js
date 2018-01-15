@@ -3,6 +3,11 @@ const { tokens } = require('./util/config');
 
 const client = new CreativeClient();
 
+/**
+ * Client is Shipping by default
+ * This code is for when starting up the process
+ * Example: node app.js -debug
+ */
 process.argv.forEach((val, index, array) => {
     if (val.startsWith('-')) {
         const command = val.substr(1).toLowerCase();
@@ -21,4 +26,8 @@ process.argv.forEach((val, index, array) => {
     }
 });
 
+/**
+ * Logs bot into the discord api using discord.js
+ * Uses the tokens.json file
+ */
 client.login(tokens.discord);

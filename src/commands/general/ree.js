@@ -4,7 +4,7 @@ const utils = require('../../util');
 
 module.exports = {
     name: 'ree',
-    category: 'laugh',
+    category: 'general',
     help: '`;ree` to meme',
     /**
      * @param {Message} message 

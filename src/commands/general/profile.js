@@ -5,7 +5,7 @@ const ProfileData = require('../../models/profile');
 
 module.exports = {
     name: 'profile',
-    category: 'moderation',
+    category: 'general',
     help: '`;profile` gets your current profile\n'
         + '`;profile <user>` gets that users profile',
     example: '`;profile @Colby`',

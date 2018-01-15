@@ -1,6 +1,7 @@
 const { Client, Collection } = require('discord.js');
 const Command = require('./command');
 const ClientModes = require('./clientmodes');
+const Logger = require('./logger');
 
 class CreativeClient extends Client {
     
@@ -8,7 +9,8 @@ class CreativeClient extends Client {
         super(options);
         
         /**
-         * MusicPlayers across all guilds
+         * MusicPlayers across all guilds.
+         * Stored by guild id
          * @type {Collection<String, Command>}
          */
         this.musicPlayers = new Collection();
@@ -17,12 +19,18 @@ class CreativeClient extends Client {
          * @type {ClientModes}
          */
         this.mode = ClientModes.SHIPPING;
+
+        /**
+         * @type {Logger}
+         */
+        this.logger = new Logger();
         
         this.setup();
     }
     
     /**
      * @private
+     * Binds events to discord js
      */
     setup() {
         const Events = require('../events');
