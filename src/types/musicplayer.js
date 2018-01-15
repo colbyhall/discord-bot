@@ -53,6 +53,7 @@ class MusicPlayer {
      * Clears queue
      */
     clear() {
+        this.queue = [];
         if (this.dispatcher) {
             this.dispatcher.end();
         }
