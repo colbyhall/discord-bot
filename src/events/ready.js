@@ -50,6 +50,6 @@ module.exports = async (client) => {
      */
     const channel = client.channels.get(config.channels.testing);
     if (channel) {
-        channel.send('Ready :edgy:');
+        channel.send('Ready :)');
     }
 }
