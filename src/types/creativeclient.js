@@ -11,7 +11,7 @@ class CreativeClient extends Client {
         /**
          * MusicPlayers across all guilds.
          * Stored by guild id
-         * @type {Collection<String, Command>}
+         * @type {Collection<String>, Command>}
          */
         this.musicPlayers = new Collection();
         

@@ -6,5 +6,7 @@ module.exports = {
     MusicPlayer: require('./musicplayer'),
     CreativeClient: require('./creativeclient'),
     DataBase: require('./database'),
-    BlackListActions: require('./blacklistactions')
+    BlackListActions: require('./blacklistactions'),
+    Logger: require('./logger'),
+    LoggerType: require('./loggertype')
 }
