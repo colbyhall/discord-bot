@@ -141,7 +141,7 @@ module.exports = {
     shouldCheckMessage(client, message) {
         return (client.mode === ClientModes.DEBUG && message.channel.id != config.channels.testing) 
         || (client.mode === ClientModes.SHIPPING) && message.channel.id == config.channels.testing 
-        || message.author.bot;
+        || message.author.bot || message.channel.type === 'dm';
     },
     /**
      * Gets all commands

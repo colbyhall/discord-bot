@@ -39,7 +39,7 @@ module.exports = {
                 });
 
                 embed.setAuthor(`${author.username}#${author.discriminator}`, author.avatarURL());
-                embed.setDescription(`Rank: ${utils.getRankFromTotalPoints(guild.rank.level)} (${guild.rank.level}/${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(guild.rank.level) + 1)})`);
+                embed.setDescription(`Rank: ${utils.getRankFromTotalPoints(guild.rank.level, 256)} (${guild.rank.level}/${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(guild.rank.level, 256) + 1, 256)})`);
                 message.channel.send({embed});
             }
         })

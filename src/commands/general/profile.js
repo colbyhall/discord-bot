@@ -46,7 +46,7 @@ module.exports = {
             const rank = guild.rank.level;
 
             embed.setDescription(
-                `Rank: ${utils.getRankFromTotalPoints(rank)} (${rank} / ${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank) + 1)})`
+                `Rank: ${utils.getRankFromTotalPoints(rank, 256)} (${rank} / ${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank, 256) + 1, 256)})`
                 + `\n\nThis user has ${guild.warnings.length} warnings, ${guild.mutes.length} mutes, ${guild.kicks.length} kicks, and ${guild.bans.length} bans`
             );
 

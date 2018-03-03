@@ -137,11 +137,12 @@ module.exports = async (client, message) => {
             const prevRank = utils.getRankFromTotalPoints(rank.level, guild.rankSystem.exponential);
             rank.level += words;
             rank.lastMessageTime = Date.now();
-
+            
             /**
              * Emit a message saying that they've ranked up
              */
             if (utils.getRankFromTotalPoints(rank.level, guild.rankSystem.exponential) > prevRank) {
+
                 const embed = utils.getEmbed()
                 embed.setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.avatarURL());
                 embed.setDescription(`Congrats you've ranked up to ${utils.getRankFromTotalPoints(rank.level, guild.rankSystem.exponential)}!`);
