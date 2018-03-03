@@ -1,11 +1,13 @@
 const { CreativeClient, MusicPlayer, ClientModes } = require('../types');
 const { GuildData, ProfileData } = require('../models')
 const { config } = require('../util/config');
+const { Permissions } = require('discord.js');
 /**
  * This is called when the bot is finally logged in
  * @param {CreativeClient} client 
  */
 module.exports = async (client) => {
+
     /**
      * Setting up a music player for each guild
      */
@@ -39,22 +41,18 @@ module.exports = async (client) => {
      */
     for(let channel of client.channels.array()) {
         if (channel && channel.type === 'text') {
-            channel.messages.fetch();
+            channel.messages.fetch().catch(() => {});
         }
     }
    
     /**
      * Returns if the bot is not in debug mode
      */
-    if (client.mode !== ClientModes.DEBUG) {
-        return;
-    }
+    if (client.mode !== ClientModes.DEBUG) return;
     
     /**
      * Message that is sent when ready
      */
     const channel = client.channels.get(config.channels.testing);
-    if (channel) {
-        channel.send('Ready :)');
-    }
+    if (channel) channel.send('Ready');
 }

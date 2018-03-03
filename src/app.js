@@ -26,6 +26,8 @@ process.argv.forEach((val, index, array) => {
     }
 });
 
+process.on('unhandledRejection', err => console.error(`Uncaught Promise Rejection: \n${err.stack}`));
+
 /**
  * Logs bot into the discord api using discord.js
  * Uses the tokens.json file

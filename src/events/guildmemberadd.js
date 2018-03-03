@@ -21,18 +21,17 @@ module.exports = async (client, member) => {
     GuildData.findOne({id: member.guild.id}, (err, guild) => {
         if (!guild || !guild.channels || !guild.channels.welcome) return;
 
-        if (guild.mode !== client.mode) return;
-
+        console.log('test');
         ProfileData.findOne({id: member.id}, (err, profile) => {
             if (!profile) {
                 ProfileData.create({
                     id: member.id, 
-                    guilds: [{id: message.guild.id}]
+                    guilds: [{id: member.guild.id}]
                 });
                 return;
             }
     
-            profile.guilds.push({id: message.guild.id});
+            profile.guilds.push({id: member.guild.id});
     
             profile.save();
         });
@@ -41,7 +40,6 @@ module.exports = async (client, member) => {
          * Shoot a message to the welcome channel saying that the user joined
          */
         const welcomeChannel = member.guild.channels.get(guild.channels.welcome);
-
         if (guild.channels.rules) {
             const ruleChannel = member.guild.channels.get(guild.channels.rules);
             

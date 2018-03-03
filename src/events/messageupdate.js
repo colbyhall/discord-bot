@@ -1,6 +1,7 @@
 const { Message } = require('discord.js');
 const { CreativeClient, ClientModes } = require('../types');
 const utils = require('../util');
+const { GuildData } = require('../models');
 
 /**
  * This is called when someone edits a message
@@ -23,13 +24,13 @@ module.exports = async (client, oldMessage, newMessage) => {
     /**
      * Check the client mode and make sure its the one this version is on
      */
-    GuildData.findOne({id: member.guild.id}, (err, guild) => {
+    GuildData.findOne({id: oldMessage.guild.id}, (err, guild) => {
 
-        if (guild.mode !== client.mode) return;
+        // if (guild.mode !== client.mode) return;
         
         /**
          * Audit a message that someone changed a message
          */
-        utils.auditMessage(message.member, `Changed "${oldMessage.content}" to "${newMessage.content}" in ${newMessage.channel.toString()}`);
+        utils.auditMessage(oldMessage.member, `Changed "${oldMessage.content}" to "${newMessage.content}" in ${newMessage.channel.toString()}`);
     });
 }

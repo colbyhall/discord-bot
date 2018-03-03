@@ -106,10 +106,14 @@ class MusicPlayer {
             }
 
             const stream = ytdl(musicData.url, { filter: 'audioonly' });
-            this.dispatcher = this.voiceConnection.playStream(stream);
+
+            this.dispatcher = this.voiceConnection.play(stream);
+
+            this.dispatcher.on('error', (err) => { console.log(err); });
+            
             this.dispatcher.on('end', () => {                    
                 this.dispatcher = null;
-    
+                
                 this.queue.shift();
                 if (this.get()) {
                     this.play(this.get());          

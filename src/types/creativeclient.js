@@ -23,7 +23,7 @@ class CreativeClient extends Client {
         /**
          * @type {Logger}
          */
-        this.logger = new Logger();
+        // this.logger = new Logger();
         
         this.setup();
     }

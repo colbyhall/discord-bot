@@ -17,17 +17,8 @@ module.exports = async (client, message) => {
     /**
      * This is to prevent discord with spamming us with false negatives
      */
-    if (message.content === '') {
-        return;
-    }
-
-    /**
-     * Check the client mode so we don't audit twice
-     */
-    GuildData.findOne({id: member.guild.id}, (err, guild) => {
-        if (guild.mode !== client.mode) return;
-
-        utils.auditMessage(message.member, `Removed "${message.content}" from ${message.channel.toString()}`);
-    });
+    if (message.content === '') return;
+    
+    utils.auditMessage(message.member, `Removed "${message.content}" from ${message.channel.toString()}`);
 
 }

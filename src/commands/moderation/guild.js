@@ -25,18 +25,18 @@ module.exports = {
             embed.setAuthor(message.guild.name, message.guild.iconURL());
             
             if (args.length == 0) {
-                embed.setDescription(`Prefix: '${guild.prefix}'`);
+                embed.setDescription(`Prefix: ${guild.prefix}`);
 
                 if (guild.channels) {
-                    if (guild.channels.welcome) {
+                    if (guild.channels.welcome && message.guild.channels.get(guild.channels.welcome)) {
                         embed.addField('Welcome Channel', message.guild.channels.get(guild.channels.welcome).toString());
                     }
 
-                    if (guild.channels.rules) {
+                    if (guild.channels.rules && message.guild.channels.get(guild.channels.rules)) {
                         embed.addField('Rules Channel', message.guild.channels.get(guild.channels.rules).toString());
                     }
 
-                    if (guild.channels.audit) {
+                    if (guild.channels.audit && message.guild.channels.get(guild.channels.audit)) {
                         embed.addField('Audit Channel', message.guild.channels.get(guild.channels.audit).toString());
                     }
                 }

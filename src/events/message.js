@@ -36,6 +36,7 @@ module.exports = async (client, message) => {
              */
             const args = message.content.slice(config.prefix.length).split(' ');
             const name = args.shift().toLowerCase();
+
             
             /**
              * Get the command module dynamically from the parsed data
@@ -43,6 +44,11 @@ module.exports = async (client, message) => {
             let command = utils.getCommands().get(name);
             if (command) {
                 
+                const commandData = guild.commands.find((command) => {
+                    return command.name === name;
+                });
+
+                if (commandData && !commandData.enabled) return;
                 /**
                  * Create our dynamic args object and then push the args into it
                  * We're also going to load the musicplayer in there because why not
@@ -56,6 +62,7 @@ module.exports = async (client, message) => {
                 /**
                  * Execute the command and then make check the promise if we should audit the command
                  */
+
                 command.execute(message, argsObj).then((result) => {
                     if (result) {
                         utils.auditMessage(message.member, `Used "${config.prefix + command.name} ${argsObj.toString()}" in ${message.channel.toString()}`);
