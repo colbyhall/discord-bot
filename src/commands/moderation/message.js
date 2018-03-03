@@ -23,11 +23,20 @@ module.exports = {
             return args[0] === channel.toString();
         });
 
-        if (!channel) message.channel.send('That channel does not exist');
+        if (!channel) {
+            message.channel.send('That channel does not exist');
+            return false;
+        }
 
         channel.send(args.toString(1));
 
-        message.channel.send('Message Sent.');
-        
+        if (channel.id === message.channel.id) {
+            message.delete();
+            return true;
+        } else {
+            message.channel.send('Message Sent.');
+        }
+
+        return true;
     }
 }

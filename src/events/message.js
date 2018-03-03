@@ -49,6 +49,10 @@ module.exports = async (client, message) => {
                 });
 
                 if (commandData && !commandData.enabled) return;
+                
+                if (commandData) {
+                    command.roles = commandData.roles;
+                }
                 /**
                  * Create our dynamic args object and then push the args into it
                  * We're also going to load the musicplayer in there because why not

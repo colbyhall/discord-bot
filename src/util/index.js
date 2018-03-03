@@ -104,10 +104,11 @@ module.exports = {
         if (!command.roles) {
             return true;
         }
-
+        console.log(command.roles);
         if (member.guild.available) {
             for (const role of command.roles) {
-                if(member.guild.roles.has(role)) {
+                if(member.roles.has(role)) {
+                    console.log(command.roles);
                     return true;
                 }
             }
