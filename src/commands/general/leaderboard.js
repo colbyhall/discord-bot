@@ -6,7 +6,7 @@ const { ProfileData } = require('../../models');
 module.exports = {
     name: 'leaderboard',
     category: 'general',
-    help: '`;leaderboard` to get the total ranks',
+    help: '`;leaderboard` to get the total ranks of the top 20',
     /**
      * @param {Message} message 
      * @param {Arguments} args 
@@ -46,6 +46,7 @@ module.exports = {
                 embed.setTitle(`${message.guild.name} Leaderboard`);
                 for (let i = 0; i < membersOfGuild.length; i++) {
 
+                    if (embed.fields.length > 19) break;
                     const guildMember = message.guild.members.get(membersOfGuild[i].id);
                     if (!guildMember) continue;
 
@@ -55,9 +56,8 @@ module.exports = {
                         return guild.id === message.guild.id;
                     }).rank;
 
-                    embed.addField(`${i + 1}: ${name}`, `Rank: ${utils.getRankFromTotalPoints(rank.level, 256)} (${rank.level}/${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank.level, 256) + 1, 256)})`);
+                    embed.addField(`${embed.fields.length + 1}: ${name}`, `Rank: ${utils.getRankFromTotalPoints(rank.level, 256)} (${rank.level}/${utils.getTotalPointsFromRank(utils.getRankFromTotalPoints(rank.level, 256) + 1, 256)})`);
 
-                    if (i > 18) break;
                 }
 
                 message.channel.send(embed);
