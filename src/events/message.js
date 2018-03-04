@@ -11,6 +11,22 @@ const { config } = require('../util/config');
  */
 module.exports = async (client, message) => {
 
+    if (message.channel.type === 'dm' && !message.author.bot) {
+        const items = [
+            'can you like fucking not',
+            'seriously fuck off',
+            'who are you talking to me',
+            'what is your fucking problem man',
+            'jesus fucking christ',
+            {
+                files: ['https://media.discordapp.net/attachments/329329501945331712/376505116993257475/4564575466.gif']
+            }
+        ]
+
+        message.channel.send(items[Math.floor(Math.random() * items.length)]);
+        return;
+    }
+
     /**
      * Calls a util function if we should check this message
      */

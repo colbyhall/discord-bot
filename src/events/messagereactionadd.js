@@ -10,6 +10,8 @@ const utils = require('../util');
  */
 module.exports = async (client, messageReaction, user) => {
 
+
+    return;
     /**
      * Get this servers musicplayer
      */
