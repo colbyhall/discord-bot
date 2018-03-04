@@ -23,7 +23,7 @@ module.exports = {
             }
             else {
                 const commands = utils.getCommands().filter((command) => {
-                    return command.category == args[0] && utils.canUse(message.guild, command);
+                    return command.category == args[0];
                 }).array();
                 
                 if (commands.length > 0)
@@ -46,7 +46,7 @@ module.exports = {
             const commands = utils.getCommands().array();
 
             for (const command of commands) {
-                if (command.name != this.name && utils.canUse(message.member, this) && command.category !== 'moderation' && command.help.length < 1024) {
+                if (command.name != this.name && command.category !== 'moderation' && command.help.length < 1024) {
                     embed.addField(command.name, command.help);
                 }
             }
