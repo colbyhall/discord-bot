@@ -23,6 +23,7 @@
     "opusscript": "0.0.4",
     "spotify-web-api-node": "^2.5.0",
     "superagent": "^3.8.2",
-    "ytdl-core": "^0.20.2"
+    "ytdl-core": "^0.20.2",
+    "google-translate": "^2.1.0"
   }
 }
