@@ -13,6 +13,8 @@ module.exports = {
      */
     async execute(message, args) {
 
+        if (message.deletable) message.delete();
+
         message.channel.send({
             files: ['https://cdn.discordapp.com/attachments/419367755415027723/419367853830045713/bowen_fuck_you.png']
         });

@@ -13,6 +13,8 @@ module.exports = {
      */
     async execute(message, args) {
 
+        if (message.deletable) message.delete();
+
         const quotes = [
             'kill all jews'
         ]
