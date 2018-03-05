@@ -59,9 +59,11 @@ module.exports = {
 
             message.author.createDM().then((channel) => {
                 channel.send({embed});
+                message.reply('we sent you a DM with all of our amazing commands');
+            }).catch(() => {
+                message.reply('looks like we couldnt send you a dm');
             });
 
-            message.reply('we sent you a DM with all of our amazing commands');
         }
 
         return false;
