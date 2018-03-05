@@ -15,11 +15,10 @@ module.exports = {
         if (args.length > 0) {
             const searchCommand = utils.getCommands().get(args[0]);
             const embed = utils.getEmbed();
-            if (searchCommand && utils.canUse(message.author, searchCommand)) {
-                embed.setTitle(searchCommand.name);
+            if (searchCommand && utils.canUse(message.member, searchCommand)) {
+                embed.addField(searchCommand.name.firstLetterToUpperCase(), searchCommand.help);
 
-                if (!searchCommand.help) return false;
-                embed.setDescription(searchCommand.help);
+                if (searchCommand.example) embed.addField('Example', searchCommand.example);
 
                 message.channel.send({embed});
             }

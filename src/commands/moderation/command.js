@@ -10,7 +10,11 @@ module.exports = {
         + '`;command <command> add <role>` to add a role to that command\n'
         + '`;command <command> remove <role>` to remove that role\n'
         + '`;command <command> enable` to enable that command\n'
-        + '`;command <command> disable` to disable that command',
+        + '`;command <command> disable` to disable that command\n'
+        + '`;command <command> create <content>` to create a custom command\n'
+        + '`;command <command> edit <content>` to edit the content of a custom command\n'
+        + '`;command <command> delete` to delete a command\n'
+        + '`;command all delete` to delete all command data',
     example: ';command purge add admins',
     /**
      * @param {Message} message 
