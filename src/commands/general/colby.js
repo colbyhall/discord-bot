@@ -3,7 +3,7 @@ const Arguments = require('../../types/arguments');
 const utils = require('../../util');
 
 module.exports = {
-    name: 'serebii',
+    name: 'colby',
     category: 'general',
     /**
      * @param {Message} message 
@@ -12,9 +12,7 @@ module.exports = {
      */
     async execute(message, args) {
         
-        message.channel.send({
-            files: ['https://pbs.twimg.com/media/DXZrLVZWsAABtrV.jpg']
-        });
+        message.channel.send('https://gyazo.com/81c35b71c805724f1c2b1ed9f44f8968');
 
         return false;
     }
