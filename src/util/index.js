@@ -101,7 +101,7 @@ module.exports = {
      */
     canUse(member, command) {
 
-        if (!command.roles) {
+        if (!command.roles || command.roles.length === 0) {
             return true;
         }
         

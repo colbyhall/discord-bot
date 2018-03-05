@@ -48,7 +48,24 @@ let guildSchema = mongoose.Schema({
             default: BlackListActions.AUDIT
         }
     },
-    commands: [{name: String, roles: [String], enabled: Boolean}],
+    commands: [
+        {
+            name: {
+                type: String,
+                required: true
+            }, 
+            roles: [String], 
+            enabled: {
+                type: Boolean,
+                default: true
+            }, 
+            type: {
+                type: Number,
+                default: 0
+            },
+            output: Object
+        }
+    ],
     tempBans: [{id: String, time: Date}],
 }, { collection: 'guilds' });
 

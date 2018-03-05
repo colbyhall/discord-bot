@@ -8,5 +8,6 @@ module.exports = {
     DataBase: require('./database'),
     BlackListActions: require('./blacklistactions'),
     Logger: require('./logger'),
-    LoggerType: require('./loggertype')
+    LoggerType: require('./loggertype'),
+    CommandType: require('./commandtype')
 }

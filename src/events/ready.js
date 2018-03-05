@@ -31,6 +31,7 @@ module.exports = async (client) => {
                 
                 console.log(client.guilds.get(guildData.id).name);
                 console.log(guildData + "\n");
+                console.log(guildData.commands + '\n');
             
             }
         });

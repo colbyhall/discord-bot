@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const Arguments = require('../../types/arguments'); 
+const { Arguments, CommandType } = require('../../types'); 
 const utils = require('../../util');
 const GuildData = require('../../models/guild');
 
@@ -23,37 +23,56 @@ module.exports = {
         
         let doCategory = false;
 
-        if (!utils.getCommands().get(args[0])) {
+        const category = utils.getCommands().filter((elem) => {
+            return elem.category === args[0];
+        }).array();
 
-            const category = utils.getCommands().filter((elem) => {
-                return elem.category === args[0];
-            }).array();
-
-            if (!category || category.length == 0)
-            {
-                message.reply(`${args[0]} is not a valid command`);
-                return;   
-            }
+        if (category && category.length > 0) {
             doCategory = true;
         }
 
-        let embed = utils.getEmbed();
+        const embed = utils.getEmbed();
 
         GuildData.findOne({id: message.guild.id}, (err, guild) => {
 
             if (!guild) return;
 
-            function editCommand(command) {
+            if (args[1] === 'delete') {
+                if (args[0] === 'all') {
+                    guild.commands = [];
+                    embed.addField('All Commands', 'Deleted');
+                    guild.save();
+                    return;
+                } else if (args[0] === 'default') {
+                    const commandsToRemove = guild.commands.filter((elem) => {
+                        return elem.type === CommandType.CUSTOM;
+                    });
+
+                    for (let i = 0; i < commandsToRemove.length; i++) {
+                        commandsToRemove[i] = null;
+                    }
+
+                    guild.save();
+                    return;
+                }
+
+            }
+
+            function editCommand(command, name) {
                 if (!command) {
-                    let index = guild.commands.push({name: args[0], enabled: true}) - 1;
+                    if (!utils.getCommands().get(name) && args[1] !== 'create') {
+                        message.reply(`${name} is not a valid command`);  
+                        return;
+                    }
+                    let index = guild.commands.push({name: name}) - 1;
                     command = guild.commands[index];
                 }
     
                 let index = guild.commands.indexOf(command);
     
-                if (args.length == 1) {
+                if (args.length === 1) {
                     if (command) {
-                        embed.setTitle(args[0]);
+                        embed.setTitle(name);
                         embed.setDescription(`enabled: ${command.enabled}`);
     
                         if (command.roles && command.roles.length > 0) {
@@ -81,7 +100,7 @@ module.exports = {
     
                         if (!foundRole) {
                             guild.commands[index].roles.push(role.id);
-                            guild.save();
+                            if (!doCategory) guild.save();
     
                             embed.addField(`Role added to ${command.name}`, args[2])
                             message.channel.send({embed});
@@ -100,7 +119,7 @@ module.exports = {
     
                         if (foundRole > -1) {
                             guild.commands[index].roles.splice([foundRole], 1);
-                            guild.save();
+                            if (!doCategory) guild.save();
                             embed.addField(`Role removed from ${command.name}`, args[2])
                             message.channel.send({embed});
                         }
@@ -110,21 +129,47 @@ module.exports = {
                 }
                 else if(args[1] == 'enable') {
                     guild.commands[index].enabled = true;
-                    guild.save();
+                    if (!doCategory) guild.save();
                     embed.addField(`${command.name}`, 'enabled');
                     message.channel.send({embed});
                 }
                 else if(args[1] == 'disable') {
                     guild.commands[index].enabled = false;
-                    guild.save();
+                    if (!doCategory) guild.save();
                     embed.addField(`${command.name}`, 'disabled');
                     message.channel.send({embed});
                 }
                 else if(args[2] == 'toggle') {
                     guild.commands[index].enabled = !guild.commands[index].enabled;
-                    guild.save();
+                    if (!doCategory) guild.save();
                     embed.addField(`${command.name}`, guild.commands[index].enabled ? 'enabled' : 'disabled');
                     message.channel.send({embed});
+                }
+                else if((args[1] === 'create' || args[1] === 'edit') && args[2]) {
+                    const rest = args.toString(2);
+
+                    if (rest.endsWith('.png') || rest.endsWith('.gif') || rest.endsWith('.jpg') || rest.endsWith('.jpeg')) {
+                        // file
+                        command.type = CommandType.FILE;
+
+                        command.output = { files: [rest] };
+                    } else {
+                        // text
+                        command.type = CommandType.TEXT;
+
+                        command.output = rest;
+                    }
+
+                    embed.addField(`${command.name}`, args[1] === 'create' ? 'Created' : 'Edited');
+                    message.channel.send({embed});
+
+                    if (!doCategory) guild.save();
+                }
+                else if(args[1] === 'delete' && command.type && command.type != CommandType.CUSTOM) {
+                    embed.addField(`${command.name}`, 'Deleted');
+                    message.channel.send({embed});
+                    guild.commands.splice(index);
+                    if (!doCategory) guild.save();
                 }
                 else {
                     utils.executeCommandHelp(message, this);
@@ -136,7 +181,12 @@ module.exports = {
                     return command.name == args[0];
                 });
 
-                editCommand(command);
+                if (args[1] === 'create' && command) {
+                    message.reply('this command has already been created');
+                    return false;
+                }
+
+                editCommand(command, args[0]);
 
             } else {
                 const category = utils.getCommands().filter((elem) => {
@@ -148,8 +198,10 @@ module.exports = {
                         return command.name == commandData.name;
                     });
 
-                    editCommand(command);
+                    editCommand(command, commandData.name);
                 }
+
+                guild.save();
             }
             
         });

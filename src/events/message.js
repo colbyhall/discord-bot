@@ -1,5 +1,5 @@
 const { Message } = require('discord.js');
-const { CreativeClient, ClientModes, Arguments } = require('../types');
+const { CreativeClient, ClientModes, Arguments, CommandType } = require('../types');
 const { ProfileData, GuildData } = require('../models')
 const utils = require('../util');
 const { config } = require('../util/config');
@@ -58,11 +58,12 @@ module.exports = async (client, message) => {
              * Get the command module dynamically from the parsed data
              */
             let command = utils.getCommands().get(name);
+
+            const commandData = guild.commands.find((command) => {
+                return command.name === name;
+            });
+
             if (command) {
-                
-                const commandData = guild.commands.find((command) => {
-                    return command.name === name;
-                });
 
                 if (commandData && !commandData.enabled) return;
                 
@@ -88,6 +89,12 @@ module.exports = async (client, message) => {
                         utils.auditMessage(message.member, `Used "${config.prefix + command.name} ${argsObj.toString()}" in ${message.channel.toString()}`);
                     }
                 });
+            } else if (commandData) {
+                if (commandData.enabled && commandData.type && commandData.output) {
+                    if (commandData.type != CommandType.CUSTOM && utils.canUse(message.member, {roles: commandData.roles})) {
+                        message.channel.send(commandData.output);
+                    }
+                }
             }
         }
 
