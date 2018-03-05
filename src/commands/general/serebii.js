@@ -5,7 +5,6 @@ const utils = require('../../util');
 module.exports = {
     name: 'serebii',
     category: 'general',
-    help: '`;serebii` to meme',
     /**
      * @param {Message} message 
      * @param {Arguments} args 

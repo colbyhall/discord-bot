@@ -17,6 +17,8 @@ module.exports = {
             const embed = utils.getEmbed();
             if (searchCommand && utils.canUse(message.author, searchCommand)) {
                 embed.setTitle(searchCommand.name);
+
+                if (!searchCommand.help) return false;
                 embed.setDescription(searchCommand.help);
 
                 message.channel.send({embed});
@@ -31,6 +33,8 @@ module.exports = {
                     embed.setTitle(`${args[0].firstLetterToUpperCase()} Commands`)
 
                     for (const command of commands) {
+                        if (!command.help) continue;
+
                         embed.addField(command.name, command.help);
                     }
 
@@ -46,6 +50,8 @@ module.exports = {
             const commands = utils.getCommands().array();
 
             for (const command of commands) {
+                if (!command.help) continue;
+
                 if (command.name != this.name && command.category !== 'moderation' && command.help.length < 1024) {
                     embed.addField(command.name, command.help);
                 }

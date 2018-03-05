@@ -6,7 +6,8 @@ const config = require('../../util/config');
 module.exports = {
     name: 'translate',
     category: 'general',
-    help: '`;translate <lang> <message>`',
+    help: '`;translate <language> <message>` to translate that message in the language\n'
+        + '`;translate list` to get a list of supported langauges',
     /**
      * @param {Message} message 
      * @param {Arguments} args 
@@ -15,7 +16,7 @@ module.exports = {
     async execute(message, args) {
 
         const googleTranslate = require('google-translate')(config.tokens.youtube);
-        const lang = [
+        const langs = [
             {
                 name: "english",
                 abrev: "en"
@@ -36,6 +37,22 @@ module.exports = {
                 name: "french",
                 abrev: "fr"
             },
+            {
+                name: "swedish",
+                abrev: "sv"
+            },
+            {
+                name: "japanese",
+                abrev: "ja"
+            },
+            {
+                name: "chinese",
+                abrev: "zh"
+            },
+            {
+                name: "dutch",
+                abrev: "nl"
+            },
         ];
 
         if (args.length < 2) {
@@ -44,10 +61,10 @@ module.exports = {
                 const embed = utils.getEmbed();
                 embed.setTitle(`Supported Languages`);
                 let desc = '';
-                for (const language of lang) {
-                    desc += language.name + '\n';
-                }
-                desc += '\nplease use ;report to request more languages';
+
+                for (const lang of langs) desc += lang.name.firstLetterToUpperCase() + '\n';
+                desc += '\nPlease use ;report to request more languages';
+
                 embed.setDescription(desc);
                 message.channel.send(embed);
 
@@ -58,14 +75,14 @@ module.exports = {
             return false;
         }
 
-        const abrev = lang.find((lang) => {
+        const lang = langs.find((lang) => {
             return args[0].toLowerCase() === lang.name || args[0].toLowerCase() === lang.abrev;
-        }).abrev;
+        });
 
-        googleTranslate.translate(args.toString(1), abrev, (err, translation) => {
+        googleTranslate.translate(args.toString(1), lang.abrev, (err, translation) => {
             const embed = utils.getEmbed();
-            embed.setTitle(`${args[0]} translation`);
-            embed.setDescription(`"${args.toString(1)}": "${translation.translatedText}"`);
+            embed.setTitle(`${lang.name.firstLetterToUpperCase()} Translation`);
+            embed.setDescription(`"${args.toString(1)}" -> "${translation.translatedText}"`);
             message.channel.send(embed);
         });
 
