@@ -47,7 +47,12 @@ module.exports = {
                 .setColor(warning ? 0xf44242 : 0xf4eb41)
                 .setDescription(message)
                 .setAuthor(`${member.user.username}#${member.user.discriminator}`, member.user.avatarURL());
-                auditChannel.send({embed});
+                auditChannel.send({embed}).then((message) => {
+                    if (warning) {
+                        message.pin().catch((reason) => {
+                        });
+                    }
+                });
             }
         })
     },

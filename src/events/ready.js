@@ -11,29 +11,17 @@ module.exports = async (client) => {
     /**
      * Setting up a music player for each guild
      */
-    for (let guild of client.guilds.array()) {
-        client.musicPlayers.set(guild.id, new MusicPlayer(guild));
-    }
+    for (let guild of client.guilds.array()) client.musicPlayers.set(guild.id, new MusicPlayer(guild));
 
     /**
      * Adding guilds that bot are logged into that are not in the db
      */
     for (const guild of client.guilds.array()) {
         GuildData.findOne({id: guild.id}, (err, guildData) => {
-            if (!guildData) {
-                GuildData.create({id: guild.id});
-            }
 
-            /**
-             * Log the guild data for each server if we're in debug mode
-             */
-            if (client.mode === ClientModes.DEBUG) {
-                
-                console.log(client.guilds.get(guildData.id).name);
-                console.log(guildData + "\n");
-                console.log(guildData.commands + '\n');
-            
-            }
+            if (err) console.error(err);
+
+            if (!guildData) GuildData.create({ id: guild.id });
         });
     }
 

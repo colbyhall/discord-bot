@@ -35,11 +35,25 @@ module.exports = {
             doCategory = true;
         }
 
+        if (args.length === 0) {
+            utils.executeCommandHelp(message, this);
+            return;
+        }
+
         const embed = utils.getEmbed();
 
         GuildData.findOne({id: message.guild.id}, (err, guild) => {
 
             if (!guild) return;
+
+            if (!guild.setupComplete && !message.member.hasPermission("ADMINISTRATOR")) {
+                return;
+            }
+
+            if (!guild.setupComplete && args[1]) {
+                guild.setupComplete = true;
+                guild.save();
+            }
 
             if (args[1] === 'delete') {
                 if (args[0] === 'all') {
@@ -71,6 +85,8 @@ module.exports = {
                     let index = guild.commands.push({name: name}) - 1;
                     command = guild.commands[index];
                 }
+
+                if (name === 'command' && args[1] == 'disable' || args[2] === 'toggle') return;
     
                 let index = guild.commands.indexOf(command);
     
@@ -89,7 +105,7 @@ module.exports = {
                             embed.addField('Roles', rolesText)
                         }
     
-                        message.channel.send({embed});
+                        if (!doCategory) message.channel.send({embed});
                     } 
                 }
                 else if(args[1] == 'add' && args[2]) {
@@ -107,7 +123,7 @@ module.exports = {
                             if (!doCategory) guild.save();
     
                             embed.addField(`Role added to ${command.name}`, args[2])
-                            message.channel.send({embed});
+                            if (!doCategory) message.channel.send({embed});
                         }
                     } else {
                         message.reply('sorry we could not find that role');
@@ -125,7 +141,7 @@ module.exports = {
                             guild.commands[index].roles.splice([foundRole], 1);
                             if (!doCategory) guild.save();
                             embed.addField(`Role removed from ${command.name}`, args[2])
-                            message.channel.send({embed});
+                            if (!doCategory) message.channel.send({embed});
                         }
                     } else {
                         message.reply('sorry we could not find that role');
@@ -135,19 +151,19 @@ module.exports = {
                     guild.commands[index].enabled = true;
                     if (!doCategory) guild.save();
                     embed.addField(`${command.name}`, 'enabled');
-                    message.channel.send({embed});
+                    if (!doCategory) message.channel.send({embed});
                 }
                 else if(args[1] == 'disable') {
                     guild.commands[index].enabled = false;
                     if (!doCategory) guild.save();
                     embed.addField(`${command.name}`, 'disabled');
-                    message.channel.send({embed});
+                    if (!doCategory) message.channel.send({embed});
                 }
                 else if(args[2] == 'toggle') {
                     guild.commands[index].enabled = !guild.commands[index].enabled;
                     if (!doCategory) guild.save();
                     embed.addField(`${command.name}`, guild.commands[index].enabled ? 'enabled' : 'disabled');
-                    message.channel.send({embed});
+                    if (!doCategory) message.channel.send({embed});
                 }
                 else if((args[1] === 'create' || args[1] === 'edit') && args[2]) {
                     const rest = args.toString(2);
@@ -165,13 +181,13 @@ module.exports = {
                     }
 
                     embed.addField(`${command.name}`, args[1] === 'create' ? 'Created' : 'Edited');
-                    message.channel.send({embed});
+                    if (!doCategory) message.channel.send({embed});
 
                     if (!doCategory) guild.save();
                 }
                 else if(args[1] === 'delete' && command.type && command.type != CommandType.CUSTOM) {
                     embed.addField(`${command.name}`, 'Deleted');
-                    message.channel.send({embed});
+                    if (!doCategory) message.channel.send({embed});
                     guild.commands.splice(index);
                     if (!doCategory) guild.save();
                 }

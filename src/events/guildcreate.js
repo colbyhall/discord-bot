@@ -24,9 +24,9 @@ module.exports = async (client, guild) => {
      * Look to see if we've been in this bot before and if not then add it to our db
      */
     GuildData.findOne({id: guild.id}, (err, guildData) => {
-        if (!guildData) {
-            GuildData.create({id: guild.id, prefix: ';', setupComplete: false});
-        }
+        if (err) console.error(err);
+
+        if (!guildData) GuildData.create({id: guild.id});
     });
 
     /**
@@ -39,8 +39,7 @@ module.exports = async (client, guild) => {
 
             if (!profile) {
                 ProfileData.create({id: member.id});
-            }
-            else {
+            } else {
                 profile.guilds.push({id: guild.id});
 
                 profile.save();

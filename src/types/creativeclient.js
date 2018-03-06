@@ -40,7 +40,7 @@ class CreativeClient extends Client {
         this.on('messageUpdate', (oldMessage, newMessage) => Events.messageUpdate(this, oldMessage, newMessage));
         this.on('guildMemberAdd', member => Events.guildMemberAdd(this, member));
         this.on('guildMemberRemove', member => Events.guildMemberRemove(this, member));
-        this.on('messageReactionAdd', (messageReaction, user) => Events.messageReactionAdd(messageReaction, user));
+        // this.on('messageReactionAdd', (messageReaction, user) => Events.messageReactionAdd(messageReaction, user));
         this.on('voiceStateUpdate', (oldMember, newMember) => Events.voiceStateUpdate(this, oldMember, newMember));
         this.on('guildCreate', guild => Events.guildCreate(this, guild));
         this.on('guildDelete', guild => Events.guildDelete(this, guild));

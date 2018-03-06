@@ -17,6 +17,6 @@ module.exports = async (client, member) => {
     /**
      * Tell the guild that they left
      */
-    utils.auditMessage(member, `Left...`);
+    utils.auditMessage(member, `Has left`);
 
 }

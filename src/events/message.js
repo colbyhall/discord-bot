@@ -38,11 +38,17 @@ module.exports = async (client, message) => {
      */
     GuildData.findOne({id: message.guild.id}, (err, guild) => {
 
+        if (err) {
+            console.error(err);
+            return;
+        } 
+        
+        
         /**
          * Don't do anything if the client mode isn't what the guild wants
          */
         if (guild.mode != client.mode && client.mode != ClientModes.DEBUG) return;
-
+        
         /**
          * Check if the message starts with the command prefix
          */
@@ -52,13 +58,12 @@ module.exports = async (client, message) => {
              */
             const args = message.content.slice(config.prefix.length).split(' ');
             const name = args.shift().toLowerCase();
-
             
             /**
              * Get the command module dynamically from the parsed data
              */
             let command = utils.getCommands().get(name);
-
+            
             const commandData = guild.commands.find((command) => {
                 return command.name === name;
             });
@@ -67,17 +72,19 @@ module.exports = async (client, message) => {
 
                 if (commandData && !commandData.enabled) return;
                 
-                if (commandData) {
-                    command.roles = commandData.roles;
+                if (commandData) command.roles = commandData.roles;
+
+                if (!guild.setupComplete && command.name != 'command' && command.name != 'help') {
+                    message.reply('please use the `;help` command to get you started');
+                    return;
                 }
+
                 /**
                  * Create our dynamic args object and then push the args into it
                  * We're also going to load the musicplayer in there because why not
                  */
-                const argsObj = new Arguments();
-                for (const arg of args) {
-                    argsObj.push(arg);
-                }
+                const argsObj = new Arguments(args);
+
                 argsObj.musicPlayer = client.musicPlayers.get(message.guild.id);
                 
                 /**
@@ -89,7 +96,8 @@ module.exports = async (client, message) => {
                         utils.auditMessage(message.member, `Used "${config.prefix + command.name} ${argsObj.toString()}" in ${message.channel.toString()}`);
                     }
                 });
-            } else if (commandData) {
+            } 
+            else if (commandData) {
                 if (commandData.enabled && commandData.type && commandData.output) {
                     if (commandData.type != CommandType.CUSTOM && utils.canUse(message.member, {roles: commandData.roles})) {
                         message.channel.send(commandData.output);
