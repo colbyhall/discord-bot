@@ -214,5 +214,15 @@ module.exports = {
      */
     executeCommandHelp(message, command) {
         this.getCommands().get('help').execute(message, [command.name]);
+    },
+    /**
+     * 
+     * @param {*} commandData 
+     * @returns { Boolean }
+     */
+    isValidCustomCommand(commandData) {
+        return commandData && commandData.enabled && commandData.type 
+            && commandData.output && commandData.type != CommandType.CUSTOM 
+            && this.canUse(message.member, {roles: commandData.roles});
     }
 };
