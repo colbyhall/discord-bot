@@ -1,7 +1,4 @@
-# Creative Logic
-
-## Want to add the bot?
-* [Click here](https://discordapp.com/oauth2/authorize/?permissions=271706238&scope=bot&client_id=378614988388040704) to invite the bots with the right privileges. Get it in a private channel and starting running through the ;command command
+# discord-bot
 
 ## Info
 * Dynamic discord bot with a broad guild and profile system
@@ -13,7 +10,7 @@
 ## Setup
 1. Clone project into folder
 ```sh
-$ git clone https://github.com/Colbeyyy/Creative-Logic.git
+$ git clone https://github.com/Colbeyyy/discord-bot.git
 ```
 2. Install all npm modules (must be in project directory)
 ```sh
